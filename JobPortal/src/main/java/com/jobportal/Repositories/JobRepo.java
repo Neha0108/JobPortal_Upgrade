@@ -12,4 +12,7 @@ import com.jobportal.Entities.Users;
 @Repository
 public interface JobRepo extends JpaRepository<Job,Long> {
 
+    List<Job> findByRecruiterRecruiterId(Long recruiterId);
+
+    List<Job> findByActiveTrue();
 }
