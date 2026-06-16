@@ -1,0 +1,100 @@
+.custom-navbar {
+  background: rgba(13, 17, 23, 0.7);
+  backdrop-filter: blur(10px);
+  padding: 12px 40px;
+}
+/* Container */
+.cube-container {
+  width: 30px;
+  height: 30px;
+  perspective: 600px;
+}
+
+/* Cube */
+.cube {
+  width: 30px;
+  height: 30px;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: rotateCube 6s infinite linear;
+}
+
+/* Faces */
+.face {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(135deg, #007bff, #00c6ff);
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 4px;
+}
+
+/* Position each face */
+.front  { transform: rotateY(0deg) translateZ(15px); }
+.back   { transform: rotateY(180deg) translateZ(15px); }
+.right  { transform: rotateY(90deg) translateZ(15px); }
+.left   { transform: rotateY(-90deg) translateZ(15px); }
+.top    { transform: rotateX(90deg) translateZ(15px); }
+.bottom { transform: rotateX(-90deg) translateZ(15px); }
+
+/* Rotation Animation */
+@keyframes rotateCube {
+  0%   { transform: rotateX(0) rotateY(0); }
+  100% { transform: rotateX(360deg) rotateY(360deg); }
+}
+
+/* Logo Text */
+.logo-text {
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+/* Links */
+.nav-link {
+  color: #ccc !important;
+  margin-right: 20px;
+  position: relative;
+  transition: 0.3s;
+}
+
+.nav-link:hover {
+  color: white !important;
+}
+
+/* Hover underline */
+.nav-link::after {
+  content: "";
+  width: 0%;
+  height: 2px;
+  background: #007bff;
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  transition: 0.3s;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Login Button */
+.login-btn {
+  border-radius: 25px;
+  padding: 6px 18px;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  border: none;
+  transition: 0.3s;
+}
+
+.login-btn:hover {
+  transform: scale(1.05);
+}

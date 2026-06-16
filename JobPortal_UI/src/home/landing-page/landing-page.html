@@ -1,0 +1,64 @@
+<!-- Hero Section -->
+<section #vantaRef class="hero">
+  <div class="hero-content">
+    <h1>Find Your Dream Job</h1>
+    <p>Explore thousands of opportunities</p>
+
+    <div class="search-box">
+      <input type="text" placeholder="Search jobs..." />
+      <button>Search</button>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Jobs -->
+<section class="featured">
+  <h2>Featured Jobs</h2>
+
+  <div class="job-cards">
+    <div class="job-card" *ngFor="let job of jobs">
+      <img src="https://via.placeholder.com/40" alt="{{job.company}}" />
+      <h3>{{job.title}}</h3>
+      <p>{{job.company}}</p>
+      <span>{{job.location}}</span>
+      <button>View</button>
+    </div>
+  </div>
+</section>
+
+<!-- Categories -->
+<section class="categories">
+  <h2>Browse by Category</h2>
+
+  <div class="category-list">
+    <div class="category">IT</div>
+    <div class="category">Marketing</div>
+    <div class="category">Finance</div>
+    <div class="category">Design</div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <h2>Are you a recruiter?</h2>
+  <p>Post jobs and find the best talent</p>
+  <button>Post a Job</button>
+</section>
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" *ngIf="showLogin">
+  <div class="modal-box">
+
+    <span class="close-btn" (click)="closeLogin()">×</span>
+
+    <h2>Login</h2>
+
+    <form>
+      <input type="email" placeholder="Email" />
+      <input type="password" placeholder="Password" />
+
+      <button>Login</button>
+    </form>
+
+  </div>
+</div>
+<router-outlet></router-outlet>
