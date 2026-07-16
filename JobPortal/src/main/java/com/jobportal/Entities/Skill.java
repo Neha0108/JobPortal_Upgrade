@@ -1,8 +1,10 @@
 package com.jobportal.Entities;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
+@Data
 public class Skill {
 
     @Id

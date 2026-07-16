@@ -54,9 +54,9 @@ export class Login {
           );
 
           if (res.role === 'CANDIDATE') {
-            this.router.navigate(['/']);
+            this.router.navigate(['/candidate']);
           } else {
-            this.router.navigate(['/register']);
+            this.router.navigate(['/recruiter']);
           }
 
           console.log('Login successful:', res);

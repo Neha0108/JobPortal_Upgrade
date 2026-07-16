@@ -1,0 +1,28 @@
+<div class="profile-card">
+  <div class="avatar"
+       [style.background-image]="profile?.profileImageUrl ? 'url(' + profile!.profileImageUrl + ')' : 'none'">
+    <span *ngIf="!profile?.profileImageUrl">{{ getInitials() }}</span>
+  </div>
+
+  <div class="profile-info">
+    <div class="profile-name">{{ profile?.fullName ?? 'Your Name' }}</div>
+    <div class="profile-sub" *ngIf="profile?.city">
+      📍 {{ profile!.city }}<span *ngIf="profile?.country">, {{ profile!.country }}</span>
+    </div>
+    <div class="profile-sub" *ngIf="profile?.education">🎓 {{ profile!.education }}</div>
+    <div class="profile-sub" *ngIf="profile?.yearsOfExperience">
+      💼 {{ profile!.yearsOfExperience }} yr{{ profile!.yearsOfExperience === 1 ? '' : 's' }} experience
+    </div>
+  </div>
+
+  <div class="profile-completion">
+    <div class="completion-row">
+      <span class="completion-label">Profile</span>
+      <span class="completion-pct">{{ getCompletion() }}%</span>
+    </div>
+    <div class="prog-bar">
+      <div class="prog-fill" [style.width.%]="getCompletion()"></div>
+    </div>
+    <a routerLink="/candidate/profile" class="edit-link">Edit Profile →</a>
+  </div>
+</div>

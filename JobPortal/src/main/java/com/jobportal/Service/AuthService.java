@@ -4,7 +4,7 @@ import com.jobportal.DTO.AuthResponse;
 import com.jobportal.DTO.LoginRequest;
 import com.jobportal.DTO.RegisterRequest;
 import com.jobportal.Entities.*;
-import com.jobportal.Repositories.CandidateProfileRepository;
+import com.jobportal.Repositories.CandidateProfileRepo;
 import com.jobportal.Repositories.RecruiterProfileRepository;
 import com.jobportal.Repositories.UsersRepo;
 import com.jobportal.Security.JwtService;
@@ -21,7 +21,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final RefreshTokenService refreshTokenService;
-    private final CandidateProfileRepository candidateProfileRepo;
+    private final CandidateProfileRepo candidateProfileRepo;
     private final RecruiterProfileRepository recruiterProfileRepo;
 
     public AuthResponse register(RegisterRequest request) {

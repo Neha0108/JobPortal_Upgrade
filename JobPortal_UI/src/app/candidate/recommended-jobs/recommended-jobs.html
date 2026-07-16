@@ -1,0 +1,95 @@
+<div class="section">
+
+    <div class="section-header">
+
+        <h2>Recommended Jobs</h2>
+
+        <span>{{jobs.length}} Jobs</span>
+
+    </div>
+
+    <div class="jobs-grid">
+
+        <div class="job-card" *ngFor="let job of jobs">
+
+            <div class="company">
+
+                <div class="logo">
+
+                    {{job.companyName?.charAt(0)}}
+
+                </div>
+
+                <div>
+
+                    <h3>{{job.jobTitle}}</h3>
+
+                    <p>{{job.companyName}}</p>
+
+                </div>
+
+            </div>
+
+            <div class="chips">
+
+                <span>{{job.jobLocation}}</span>
+
+                <span>{{job.workMode}}</span>
+
+                <span>{{job.employmentType}}</span>
+
+            </div>
+
+            <div class="salary">
+
+                ₹ {{job.minSalary | number:'1.0-0'}}
+
+                -
+
+                ₹ {{job.maxSalary | number:'1.0-0'}}
+
+            </div>
+
+            <div class="skills">
+
+                <span *ngFor="let skill of job.skillNames">
+
+                    {{skill}}
+
+                </span>
+
+            </div>
+
+            <div class="actions">
+
+                <button
+                        class="apply-btn"
+                        (click)="applyJob(job.jobId)">
+
+                    Apply
+
+                </button>
+
+                <button
+                        class="save-btn"
+                        (click)="saveJob(job.jobId)">
+
+                    Save
+
+                </button>
+
+                <button
+                        class="details-btn"
+                        (click)="openDetails(job.jobId)">
+
+                    Details
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

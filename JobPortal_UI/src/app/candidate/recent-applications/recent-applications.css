@@ -1,0 +1,127 @@
+.section{
+
+    background:#181A20;
+
+    padding:25px;
+
+    border-radius:18px;
+
+}
+
+.header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-bottom:20px;
+
+}
+
+.header h2{
+
+    color:white;
+
+}
+
+.header span{
+
+    color:#D4AF37;
+
+}
+
+.application-card{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:15px 0;
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+}
+
+.application-card:last-child{
+
+    border:none;
+
+}
+
+.application-card h3{
+
+    color:white;
+
+    margin:0;
+
+}
+
+.application-card p{
+
+    color:#9f9f9f;
+
+    margin-top:6px;
+
+}
+
+.badge{
+
+    padding:8px 15px;
+
+    border-radius:30px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+.pending{
+
+    background:#F39C12;
+
+    color:white;
+
+}
+
+.reviewed{
+
+    background:#3498DB;
+
+    color:white;
+
+}
+
+.accepted{
+
+    background:#2ECC71;
+
+    color:white;
+
+}
+
+.rejected{
+
+    background:#E74C3C;
+
+    color:white;
+
+}
+
+.withdraw{
+
+    background:transparent;
+
+    color:#E74C3C;
+
+    border:1px solid #E74C3C;
+
+    padding:8px 15px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+}

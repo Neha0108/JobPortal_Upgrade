@@ -1,0 +1,227 @@
+.section{
+
+    margin-top:35px;
+
+}
+
+.section-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+.section-header h2{
+
+    color:white;
+
+}
+
+.section-header span{
+
+    color:#D4AF37;
+
+}
+
+.jobs-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+
+    gap:25px;
+
+}
+
+.job-card{
+
+    background:#181A20;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    border:1px solid rgba(255,255,255,.06);
+
+    transition:.3s;
+
+}
+
+.job-card:hover{
+
+    transform:translateY(-6px);
+
+    border-color:#D4AF37;
+
+}
+
+.company{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+}
+
+.logo{
+
+    width:60px;
+
+    height:60px;
+
+    border-radius:50%;
+
+    background:#D4AF37;
+
+    color:#000;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:24px;
+
+    font-weight:700;
+
+}
+
+.company h3{
+
+    margin:0;
+
+    color:white;
+
+}
+
+.company p{
+
+    margin-top:5px;
+
+    color:#A8A8A8;
+
+}
+
+.chips{
+
+    margin-top:18px;
+
+    display:flex;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+
+}
+
+.chips span{
+
+    background:#252831;
+
+    padding:6px 12px;
+
+    border-radius:20px;
+
+    color:#D4AF37;
+
+    font-size:13px;
+
+}
+
+.salary{
+
+    margin-top:20px;
+
+    color:white;
+
+    font-size:22px;
+
+    font-weight:600;
+
+}
+
+.skills{
+
+    margin-top:18px;
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+}
+
+.skills span{
+
+    background:#101114;
+
+    color:#ffffff;
+
+    padding:6px 12px;
+
+    border-radius:20px;
+
+    font-size:13px;
+
+}
+
+.actions{
+
+    margin-top:25px;
+
+    display:flex;
+
+    gap:12px;
+
+}
+
+.actions button{
+
+    flex:1;
+
+    border:none;
+
+    border-radius:10px;
+
+    padding:12px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+}
+
+.apply-btn{
+
+    background:#D4AF37;
+
+    color:black;
+
+}
+
+.save-btn{
+
+    background:#2A2D35;
+
+    color:white;
+
+}
+
+.details-btn{
+
+    background:transparent;
+
+    border:1px solid #D4AF37 !important;
+
+    color:#D4AF37;
+
+}

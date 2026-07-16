@@ -41,8 +41,18 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 UserPrincipal principal = (UserPrincipal) userDetailsService.loadUserByUsername(email);
 
                 if (jwtService.isAccessTokenValid(token, principal)) {
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
-                    authToken.setDetails( new WebAuthenticationDetailsSource().buildDetails(request));
+
+                    System.out.println("Authorities = " + principal.getAuthorities());
+
+                    UsernamePasswordAuthenticationToken authToken =
+                            new UsernamePasswordAuthenticationToken(
+                                    principal,
+                                    null,
+                                    principal.getAuthorities());
+
+                    authToken.setDetails(
+                            new WebAuthenticationDetailsSource().buildDetails(request));
+
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }
@@ -51,7 +61,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             response.getWriter().write("Invalid or expired token");
             return;
         }
-
         filterChain.doFilter(request, response);
     }
 }

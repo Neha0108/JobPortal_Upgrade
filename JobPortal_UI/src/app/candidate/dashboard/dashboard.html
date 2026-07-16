@@ -1,0 +1,226 @@
+<div class="dashboard">
+
+  <!-- Toast -->
+  <div class="toast" *ngIf="toastMessage" [ngClass]="toastType === 'success' ? 'toast-success' : 'toast-error'">
+    {{ toastMessage }}
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <div>
+      <h1 class="greeting">Welcome back{{ profile?.fullName ? ', ' + profile!.fullName.split(' ')[0] : '' }} 👋</h1>
+      <p class="subtitle">Ready to land your next dream job?</p>
+    </div>
+    <div class="header-actions">
+      <a routerLink="/candidate/profile" class="btn-outline">
+        <span class="icon">👤</span> Edit Profile
+      </a>
+    </div>
+  </div>
+
+  <!-- Stats row -->
+  <div class="stats-grid">
+    <div class="stat-card" (click)="activeTab = 'applications'">
+      <div class="stat-icon icon-purple">📄</div>
+      <div class="stat-body">
+        <div class="stat-value">{{ applications.length }}</div>
+        <div class="stat-label">Applications</div>
+      </div>
+    </div>
+
+    <div class="stat-card" (click)="activeTab = 'saved'">
+      <div class="stat-icon icon-pink">❤️</div>
+      <div class="stat-body">
+        <div class="stat-value">{{ savedJobs.length }}</div>
+        <div class="stat-label">Saved Jobs</div>
+      </div>
+    </div>
+
+    <div class="stat-card" (click)="activeTab = 'jobs'">
+      <div class="stat-icon icon-amber">💼</div>
+      <div class="stat-body">
+        <div class="stat-value">{{ allJobs.length }}</div>
+        <div class="stat-label">Available Jobs</div>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon icon-teal">👤</div>
+      <div class="stat-body">
+        <div class="stat-value">{{ getProfileCompletion() }}%</div>
+        <div class="stat-label">Profile Complete</div>
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="getProfileCompletion()"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn" [class.active]="activeTab === 'jobs'" (click)="activeTab = 'jobs'">
+      Browse Jobs <span class="tab-count">{{ filteredJobs.length }}</span>
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 'applications'" (click)="activeTab = 'applications'">
+      My Applications <span class="tab-count">{{ applications.length }}</span>
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 'saved'" (click)="activeTab = 'saved'">
+      Saved Jobs <span class="tab-count">{{ savedJobs.length }}</span>
+    </button>
+  </div>
+
+  <!-- ===== JOBS TAB ===== -->
+  <div *ngIf="activeTab === 'jobs'">
+
+    <!-- Search & Filter bar -->
+    <div class="filter-card">
+      <div class="filter-row">
+        <div class="input-group">
+          <span class="input-icon">🔍</span>
+          <input type="text" placeholder="Job title, keyword..." [(ngModel)]="keyword" class="filter-input" />
+        </div>
+        <div class="input-group">
+          <span class="input-icon">📍</span>
+          <input type="text" placeholder="Location..." [(ngModel)]="location" class="filter-input" />
+        </div>
+        <select [(ngModel)]="category" class="filter-select">
+          <option value="">All Categories</option>
+          <option *ngFor="let c of categories" [value]="c">{{ formatLabel(c) }}</option>
+        </select>
+        <select [(ngModel)]="workMode" class="filter-select">
+          <option value="">Work Mode</option>
+          <option *ngFor="let w of workModes" [value]="w">{{ formatLabel(w) }}</option>
+        </select>
+        <select [(ngModel)]="employmentType" class="filter-select">
+          <option value="">Employment Type</option>
+          <option *ngFor="let e of employmentTypes" [value]="e">{{ formatLabel(e) }}</option>
+        </select>
+      </div>
+      <div class="filter-actions">
+        <button class="btn-primary" (click)="searchJobs()">Search</button>
+        <button class="btn-ghost" (click)="clearFilters()">Clear</button>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div class="empty-state" *ngIf="loadingJobs">
+      <div class="spinner"></div>
+      <p>Finding jobs for you...</p>
+    </div>
+
+    <!-- Empty -->
+    <div class="empty-state" *ngIf="!loadingJobs && filteredJobs.length === 0">
+      <div class="empty-icon">🔍</div>
+      <p>No jobs match your search. Try different filters.</p>
+      <button class="btn-outline" (click)="clearFilters()">Show all jobs</button>
+    </div>
+
+    <!-- Job cards -->
+    <div class="job-grid" *ngIf="!loadingJobs && filteredJobs.length > 0">
+      <div class="job-card" *ngFor="let job of filteredJobs">
+        <div class="job-card-header">
+          <div>
+            <h3 class="job-title">{{ job.jobTitle }}</h3>
+            <p class="job-company">{{ job.companyName }}</p>
+          </div>
+          <div class="job-badge-group">
+            <span class="badge badge-mode">{{ formatLabel(job.workMode) }}</span>
+            <span class="badge badge-type">{{ formatLabel(job.employmentType) }}</span>
+          </div>
+        </div>
+
+        <div class="job-meta">
+          <span>📍 {{ job.jobLocation }}</span>
+          <span *ngIf="job.minSalary">
+            💰 {{ job.minSalary | number:'1.0-0' }}
+            <span *ngIf="job.maxSalary"> – {{ job.maxSalary | number:'1.0-0' }}</span>
+          </span>
+          <span *ngIf="job.experienceRequired">🧑‍💼 {{ job.experienceRequired }}+ yrs</span>
+          <span *ngIf="job.vacancies">🪑 {{ job.vacancies }} openings</span>
+        </div>
+
+        <p class="job-desc">{{ job.jobDescription | slice:0:140 }}{{ job.jobDescription.length > 140 ? '...' : '' }}</p>
+
+        <div class="skill-chips" *ngIf="job.skillNames && job.skillNames.length > 0">
+          <span class="skill-chip" *ngFor="let skill of job.skillNames | slice:0:5">{{ skill }}</span>
+          <span class="skill-chip chip-more" *ngIf="(job.skillNames?.length ?? 0) > 5">+{{ (job.skillNames?.length ?? 0) - 5 }}</span>
+        </div>
+
+        <div class="job-card-footer">
+          <span class="job-date">{{ job.createdAt | date:'dd MMM yyyy' }}</span>
+          <div class="job-actions">
+            <button class="btn-icon"
+                    [class.saved]="isJobSaved(job.jobId)"
+                    (click)="isJobSaved(job.jobId) ? unsaveJob(job.jobId) : saveJob(job.jobId)"
+                    [title]="isJobSaved(job.jobId) ? 'Unsave' : 'Save job'">
+              {{ isJobSaved(job.jobId) ? '❤️' : '🤍' }}
+            </button>
+            <button class="btn-primary btn-sm"
+                    [disabled]="isJobApplied(job.jobId)"
+                    (click)="applyToJob(job.jobId)">
+              {{ isJobApplied(job.jobId) ? '✓ Applied' : 'Apply Now' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== APPLICATIONS TAB ===== -->
+  <div *ngIf="activeTab === 'applications'">
+
+    <div class="empty-state" *ngIf="applications.length === 0">
+      <div class="empty-icon">📄</div>
+      <p>No applications yet. Browse jobs and apply!</p>
+      <button class="btn-primary" (click)="activeTab = 'jobs'">Browse Jobs</button>
+    </div>
+
+    <div class="app-list" *ngIf="applications.length > 0">
+      <div class="app-card" *ngFor="let app of applications">
+        <div class="app-info">
+          <h4 class="app-title">{{ app.jobTitle }}</h4>
+          <p class="app-date">Applied {{ app.appliedAt | date:'dd MMM yyyy' }}</p>
+          <p class="app-remark" *ngIf="app.recruiterRemarks">
+            💬 <em>{{ app.recruiterRemarks }}</em>
+          </p>
+        </div>
+        <div class="app-right">
+          <span class="badge" [ngClass]="getStatusClass(app.status)">{{ app.status }}</span>
+          <button class="btn-danger btn-sm" (click)="withdrawApplication(app.applicationId)"
+                  *ngIf="app.status === 'APPLIED'">
+            Withdraw
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SAVED JOBS TAB ===== -->
+  <div *ngIf="activeTab === 'saved'">
+
+    <div class="empty-state" *ngIf="savedJobs.length === 0">
+      <div class="empty-icon">❤️</div>
+      <p>No saved jobs. Save jobs you're interested in to review later.</p>
+      <button class="btn-primary" (click)="activeTab = 'jobs'">Browse Jobs</button>
+    </div>
+
+    <div class="saved-grid" *ngIf="savedJobs.length > 0">
+      <div class="saved-card" *ngFor="let sj of savedJobs">
+        <div class="saved-info">
+          <h4 class="saved-title">{{ sj.jobTitle }}</h4>
+          <p class="saved-meta">📍 {{ sj.jobLocation }}</p>
+          <p class="saved-date">Saved {{ sj.savedAt | date:'dd MMM yyyy' }}</p>
+        </div>
+        <div class="saved-actions">
+          <button class="btn-primary btn-sm"
+                  [disabled]="isJobApplied(sj.jobId)"
+                  (click)="applyToJob(sj.jobId)">
+            {{ isJobApplied(sj.jobId) ? '✓ Applied' : 'Apply' }}
+          </button>
+          <button class="btn-ghost btn-sm" (click)="unsaveJob(sj.jobId)">Remove</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

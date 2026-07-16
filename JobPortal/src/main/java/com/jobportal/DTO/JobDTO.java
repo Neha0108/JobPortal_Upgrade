@@ -12,41 +12,24 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class JobResponse {
+public class JobDTO {
 
     private Long jobId;
-
-    private String jobTitle;
-
-    private String jobDescription;
-
-    private String jobLocation;
-
-    private EmploymentType employmentType;
-
-    private JobCategory category;
-
-    private WorkMode workMode;
-
-    private Integer experienceRequired;
-
-    private Double minSalary;
-
-    private Double maxSalary;
-
-    private Integer vacancies;
-
-    private String benefits;
-
-    private Boolean active;
-
-    private LocalDateTime expiryDate;
-
-    private Long recruiterId;
-
     private String companyName;
-
-    private Set<String> skills;
-
+    private Set<String> skillNames;
     private LocalDateTime createdAt;
+    private String jobTitle;
+    private String jobDescription;
+    private String jobLocation;
+    private EmploymentType employmentType;
+    private JobCategory category;
+    private WorkMode workMode;
+    private Integer experienceRequired;
+    private Double minSalary;
+    private Double maxSalary;
+    private Integer vacancies;
+    private String benefits;
+    private Boolean active;
+    private LocalDateTime expiryDate;
+    private Set<Long> skillIds;
 }

@@ -1,10 +1,7 @@
 package com.jobportal.Service;
 
-import com.jobportal.DTO.JobRequest;
-import com.jobportal.DTO.JobResponse;
-import com.jobportal.Entities.Job;
-import com.jobportal.Entities.RecruiterProfile;
-import com.jobportal.Entities.Skill;
+import com.jobportal.DTO.JobDTO;
+import com.jobportal.Entities.*;
 import com.jobportal.Repositories.JobRepo;
 import com.jobportal.Repositories.RecruiterProfileRepository;
 import com.jobportal.Repositories.SkillRepository;
@@ -14,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class JobService {
@@ -28,12 +26,34 @@ public class JobService {
         this.skillRepo = skillRepo;
     }
 
-    public JobResponse addJob(JobRequest request, Long userId)
-    {
-        RecruiterProfile recruiter =
-                recruiterRepo.findByUserUserId(userId)
-                        .orElseThrow(() ->
-                                new EntityNotFoundException("Recruiter not found"));
+    private JobDTO toResponse(Job job) {
+        return JobDTO.builder()
+                .jobId(job.getJobId())
+                .jobTitle(job.getJobTitle())
+                .jobDescription(job.getJobDescription())
+                .jobLocation(job.getJobLocation())
+                .employmentType(job.getEmploymentType())
+                .category(job.getCategory())
+                .workMode(job.getWorkMode())
+                .experienceRequired(job.getExperienceRequired())
+                .minSalary(job.getMinSalary())
+                .maxSalary(job.getMaxSalary())
+                .vacancies(job.getVacancies())
+                .benefits(job.getBenefits())
+                .active(job.getActive())
+                .expiryDate(job.getExpiryDate())
+                .companyName(job.getRecruiter().getCompanyName())
+                .skillNames(job.getRequiredSkills().stream()
+                        .map(Skill::getSkillName)
+                        .collect(Collectors.toSet()))
+                .createdAt(job.getCreatedAt())
+                .build();
+    }
+
+    public JobDTO addJob(JobDTO request, Long userId) {
+
+        RecruiterProfile recruiter = recruiterRepo.findByUserUserId(userId)
+                .orElseThrow(() -> new EntityNotFoundException("Recruiter not found"));
 
         Set<Skill> skills = new HashSet<>(skillRepo.findAllById(request.getSkillIds()));
 
@@ -51,65 +71,90 @@ public class JobService {
                 .benefits(request.getBenefits())
                 .expiryDate(request.getExpiryDate())
                 .requiredSkills(skills)
-                .active(true)
+                .active(request.getActive() != null ? request.getActive() : true)
                 .recruiter(recruiter)
                 .build();
 
-        Job savedJob = jobRepo.save(job);
-
-        return JobResponse.builder()
-                .jobId(savedJob.getJobId())
-                .jobTitle(savedJob.getJobTitle())
-                .jobDescription(savedJob.getJobDescription())
-                .companyName(savedJob.getRecruiter().getCompanyName())
-                .build();
+        return toResponse(jobRepo.save(job));
     }
 
-    public Job updateJob(Long jobId, Job updatedJob) {
+    public JobDTO updateJob(Long jobId, JobDTO request) {
 
-        Job existingJob = jobRepo.findById(jobId).orElseThrow(() ->
-                                new EntityNotFoundException("Job not found"));
+        Job existingJob = jobRepo.findById(jobId)
+                .orElseThrow(() -> new EntityNotFoundException("Job not found"));
 
-        existingJob.setJobTitle(updatedJob.getJobTitle());
-        existingJob.setJobDescription(updatedJob.getJobDescription());
-        existingJob.setJobLocation(updatedJob.getJobLocation());
-        existingJob.setEmploymentType(updatedJob.getEmploymentType());
-        existingJob.setCategory(updatedJob.getCategory());
-        existingJob.setWorkMode(updatedJob.getWorkMode());
-        existingJob.setExperienceRequired(updatedJob.getExperienceRequired());
-        existingJob.setMinSalary(updatedJob.getMinSalary());
-        existingJob.setMaxSalary(updatedJob.getMaxSalary());
-        existingJob.setVacancies(updatedJob.getVacancies());
-        existingJob.setBenefits(updatedJob.getBenefits());
-        existingJob.setExpiryDate(updatedJob.getExpiryDate());
-        existingJob.setRequiredSkills(updatedJob.getRequiredSkills());
+        Set<Skill> skills = new HashSet<>(skillRepo.findAllById(request.getSkillIds()));
 
-        return jobRepo.save(existingJob);
+        existingJob.setJobTitle(request.getJobTitle());
+        existingJob.setJobDescription(request.getJobDescription());
+        existingJob.setJobLocation(request.getJobLocation());
+        existingJob.setEmploymentType(request.getEmploymentType());
+        existingJob.setCategory(request.getCategory());
+        existingJob.setWorkMode(request.getWorkMode());
+        existingJob.setExperienceRequired(request.getExperienceRequired());
+        existingJob.setMinSalary(request.getMinSalary());
+        existingJob.setMaxSalary(request.getMaxSalary());
+        existingJob.setVacancies(request.getVacancies());
+        existingJob.setBenefits(request.getBenefits());
+        existingJob.setExpiryDate(request.getExpiryDate());
+        existingJob.setRequiredSkills(skills);
+
+        if (request.getActive() != null) {
+            existingJob.setActive(request.getActive());
+        }
+
+        return toResponse(jobRepo.save(existingJob));
     }
 
+    // ── Delete Job ─────────────────────────────────────────────────────────────
     public void deleteJob(Long jobId) {
-        Job job = jobRepo.findById(jobId).orElseThrow(() ->
-                                new EntityNotFoundException("Job not found"));
-
+        Job job = jobRepo.findById(jobId)
+                .orElseThrow(() -> new EntityNotFoundException("Job not found"));
         jobRepo.delete(job);
     }
 
-    public Job getJobById(Long jobId) {
-
-        return jobRepo.findById(jobId).orElseThrow(() ->
-                new EntityNotFoundException("Job not found"));
+    // ── Get Single Job ─────────────────────────────────────────────────────────
+    public JobDTO getJobById(Long jobId) {
+        Job job = jobRepo.findById(jobId)
+                .orElseThrow(() -> new EntityNotFoundException("Job not found"));
+        return toResponse(job);
     }
 
-    public List<Job> getAllJobs() {
-        return jobRepo.findAll();
+    public List<JobDTO> getAllJobs() {
+        return jobRepo.findAll().stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
     }
 
-    public List<Job> getAllActiveJobs() {
-        return jobRepo.findByActiveTrue();
+    public List<JobDTO> getAllActiveJobs() {
+        return jobRepo.findByActiveTrue().stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
     }
 
-    public List<Job> getJobsByRecruiter(Long recruiterId) {
-        return jobRepo.findByRecruiterRecruiterId(recruiterId);
+    public List<JobDTO> getJobsByRecruiter(Long userId) {
+        RecruiterProfile recruiter = recruiterRepo.findByUserUserId(userId)
+                .orElseThrow(() -> new EntityNotFoundException("Recruiter not found"));
+
+        return jobRepo.findByRecruiterRecruiterId(recruiter.getRecruiterId()).stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
     }
 
+    public List<JobDTO> searchJobs(String keyword,
+                                   String location,
+                                   JobCategory category,
+                                   WorkMode workMode,
+                                   EmploymentType employmentType) {
+
+        return jobRepo.searchJobs(
+                        keyword,
+                        location,
+                        category,
+                        workMode,
+                        employmentType)
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
 }
