@@ -1,0 +1,43 @@
+<div class="page">
+  <h1>Dashboard</h1>
+
+  @if (isLoading()) {
+    <p>Loading your dashboard…</p>
+  } @else if (error()) {
+    <div class="form-error" role="alert">
+      <p>{{ error() }}</p>
+      <button type="button" (click)="loadDashboard()">Retry</button>
+    </div>
+  } @else if (stats(); as s) {
+    <div class="stat-grid">
+      <div class="stat-card">
+        <span class="stat-value">{{ s.totalJobsPosted }}</span>
+        <span class="stat-label">Jobs posted</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">{{ s.openJobs }}</span>
+        <span class="stat-label">Open</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">{{ s.draftJobs }}</span>
+        <span class="stat-label">Drafts</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">{{ s.closedJobs }}</span>
+        <span class="stat-label">Closed</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">{{ s.totalApplicants }}</span>
+        <span class="stat-label">Applicants</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">{{ s.shortlistedCount }}</span>
+        <span class="stat-label">Shortlisted</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">{{ s.hiredCount }}</span>
+        <span class="stat-label">Hired</span>
+      </div>
+    </div>
+  }
+</div>

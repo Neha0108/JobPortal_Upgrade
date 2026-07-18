@@ -1,0 +1,43 @@
+<div class="page">
+  <h1>Dashboard</h1>
+
+  @if (isLoading()) {
+    <p>Loading your dashboard…</p>
+  } @else if (error()) {
+    <div class="form-error" role="alert">
+      <p>{{ error() }}</p>
+      <button type="button" (click)="loadDashboard()">Retry</button>
+    </div>
+  } @else if (stats(); as s) {
+    <div class="stat-grid">
+      <div class="stat-card">
+        <span class="stat-value">{{ s.totalApplications }}</span>
+        <span class="stat-label">Applications</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">{{ s.shortlistedCount }}</span>
+        <span class="stat-label">Shortlisted</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">{{ s.interviewCount }}</span>
+        <span class="stat-label">Interviews</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">{{ s.hiredCount }}</span>
+        <span class="stat-label">Hired</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">{{ s.savedJobsCount }}</span>
+        <span class="stat-label">Saved jobs</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">{{ s.resumeCount }}</span>
+        <span class="stat-label">Resumes</span>
+      </div>
+    </div>
+
+    @if (s.resumeCount === 0) {
+      <p class="hint">You haven't uploaded a resume yet. Add one so recruiters can find you.</p>
+    }
+  }
+</div>

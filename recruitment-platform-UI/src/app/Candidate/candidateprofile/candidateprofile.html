@@ -1,0 +1,56 @@
+<div class="page">
+  <h1>My Profile</h1>
+
+  @if (isLoading()) {
+    <p>Loading your profile…</p>
+  } @else if (loadError()) {
+    <div class="form-error" role="alert">
+      <p>{{ loadError() }}</p>
+      <button type="button" (click)="loadProfile()">Retry</button>
+    </div>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="submit()" class="form" novalidate>
+      @if (profile(); as p) {
+        <p class="hint">Email: {{ p.email }} (managed via account settings)</p>
+      }
+
+      @if (saveError()) {
+        <p class="form-error" role="alert">{{ saveError() }}</p>
+      }
+      @if (saveSuccess()) {
+        <p class="form-success" role="status">Profile saved.</p>
+      }
+
+      <label for="fullName">Full name</label>
+      <input id="fullName" type="text" formControlName="fullName" />
+      @if (form.controls.fullName.invalid && form.controls.fullName.touched) {
+        <p class="field-error">
+          @if (form.controls.fullName.hasError('required')) {
+            Full name is required.
+          } @else if (form.controls.fullName.hasError('maxlength')) {
+            Full name must be under 150 characters.
+          }
+        </p>
+      }
+
+      <label for="phone">Phone</label>
+      <input id="phone" type="tel" formControlName="phone" />
+      @if (form.controls.phone.invalid && form.controls.phone.touched) {
+        <p class="field-error">Phone must be under 20 characters.</p>
+      }
+
+      <label for="headline">Headline</label>
+      <input id="headline" type="text" formControlName="headline" placeholder="e.g. Frontend Developer | Angular & TypeScript" />
+      @if (form.controls.headline.invalid && form.controls.headline.touched) {
+        <p class="field-error">Headline must be under 200 characters.</p>
+      }
+
+      <label for="summary">Summary</label>
+      <textarea id="summary" rows="5" formControlName="summary"></textarea>
+
+      <button type="submit" [disabled]="isSaving()">
+        {{ isSaving() ? 'Saving…' : 'Save changes' }}
+      </button>
+    </form>
+  }
+</div>

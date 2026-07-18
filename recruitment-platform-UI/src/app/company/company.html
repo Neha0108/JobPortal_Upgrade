@@ -1,0 +1,62 @@
+<div class="page">
+  <h1>{{ company() ? 'Company' : 'Set up your company' }}</h1>
+
+  @if (isLoading()) {
+    <p>Loading…</p>
+  } @else if (loadError()) {
+    <div class="form-error" role="alert">
+      <p>{{ loadError() }}</p>
+      <button type="button" (click)="loadCompany()">Retry</button>
+    </div>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="submit()" class="form" novalidate>
+      @if (!company()) {
+        <p class="hint">You haven't linked a company to your account yet. Set one up below — you can update it any time.</p>
+      }
+
+      @if (saveError()) {
+        <p class="form-error" role="alert">{{ saveError() }}</p>
+      }
+      @if (saveSuccess()) {
+        <p class="form-success" role="status">Company saved.</p>
+      }
+
+      <label for="name">Company name</label>
+      <input id="name" type="text" formControlName="name" />
+      @if (form.controls.name.invalid && form.controls.name.touched) {
+        <p class="field-error">
+          @if (form.controls.name.hasError('required')) {
+            Company name is required.
+          } @else if (form.controls.name.hasError('maxlength')) {
+            Company name must be under 200 characters.
+          }
+        </p>
+      }
+
+      <label for="description">Description</label>
+      <textarea id="description" rows="4" formControlName="description"></textarea>
+
+      <label for="website">Website</label>
+      <input id="website" type="url" formControlName="website" placeholder="https://example.com" />
+      @if (form.controls.website.invalid && form.controls.website.touched) {
+        <p class="field-error">Website must be under 255 characters.</p>
+      }
+
+      <label for="industry">Industry</label>
+      <input id="industry" type="text" formControlName="industry" />
+      @if (form.controls.industry.invalid && form.controls.industry.touched) {
+        <p class="field-error">Industry must be under 100 characters.</p>
+      }
+
+      <label for="logoUrl">Logo URL</label>
+      <input id="logoUrl" type="url" formControlName="logoUrl" />
+      @if (form.controls.logoUrl.invalid && form.controls.logoUrl.touched) {
+        <p class="field-error">Logo URL must be under 500 characters.</p>
+      }
+
+      <button type="submit" [disabled]="isSaving()">
+        {{ isSaving() ? 'Saving…' : (company() ? 'Save changes' : 'Create company') }}
+      </button>
+    </form>
+  }
+</div>

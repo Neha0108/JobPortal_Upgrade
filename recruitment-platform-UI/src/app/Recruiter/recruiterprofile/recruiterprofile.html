@@ -1,0 +1,61 @@
+<div class="page">
+  <h1>My Profile</h1>
+
+  @if (isLoading()) {
+    <p>Loading your profile…</p>
+  } @else if (loadError()) {
+    <div class="form-error" role="alert">
+      <p>{{ loadError() }}</p>
+      <button type="button" (click)="loadProfile()">Retry</button>
+    </div>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="submit()" class="form" novalidate>
+      @if (profile(); as p) {
+        <p class="hint">Email: {{ p.email }} (managed via account settings)</p>
+        @if (p.companyName) {
+          <p class="hint">Company: {{ p.companyName }}</p>
+        } @else {
+          <p class="hint">
+            You haven't set up a company yet.
+            <a routerLink="/recruiter/company">Set up your company</a>
+          </p>
+        }
+      }
+
+      @if (saveError()) {
+        <p class="form-error" role="alert">{{ saveError() }}</p>
+      }
+      @if (saveSuccess()) {
+        <p class="form-success" role="status">Profile saved.</p>
+      }
+
+      <label for="fullName">Full name</label>
+      <input id="fullName" type="text" formControlName="fullName" />
+      @if (form.controls.fullName.invalid && form.controls.fullName.touched) {
+        <p class="field-error">
+          @if (form.controls.fullName.hasError('required')) {
+            Full name is required.
+          } @else if (form.controls.fullName.hasError('maxlength')) {
+            Full name must be under 150 characters.
+          }
+        </p>
+      }
+
+      <label for="phone">Phone</label>
+      <input id="phone" type="tel" formControlName="phone" />
+      @if (form.controls.phone.invalid && form.controls.phone.touched) {
+        <p class="field-error">Phone must be under 20 characters.</p>
+      }
+
+      <label for="designation">Designation</label>
+      <input id="designation" type="text" formControlName="designation" placeholder="e.g. Senior Talent Acquisition Manager" />
+      @if (form.controls.designation.invalid && form.controls.designation.touched) {
+        <p class="field-error">Designation must be under 150 characters.</p>
+      }
+
+      <button type="submit" [disabled]="isSaving()">
+        {{ isSaving() ? 'Saving…' : 'Save changes' }}
+      </button>
+    </form>
+  }
+</div>
