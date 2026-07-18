@@ -1,0 +1,56 @@
+<div class="page">
+  <p><a routerLink="/recruiter/jobs">&larr; Back to my jobs</a></p>
+  <h1>{{ isEditMode ? 'Edit Job' : 'Post a Job' }}</h1>
+
+  @if (isLoading()) {
+    <p>Loading job…</p>
+  } @else if (loadError()) {
+    <div class="form-error" role="alert">{{ loadError() }}</div>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="submit()" class="form" novalidate>
+      @if (isEditMode) {
+        <p class="hint">New jobs are created as drafts. Use "Open" on the job list to publish once ready.</p>
+      }
+
+      @if (saveError()) {
+        <p class="form-error" role="alert">{{ saveError() }}</p>
+      }
+
+      <label for="title">Job title</label>
+      <input id="title" type="text" formControlName="title" />
+      @if (form.controls.title.invalid && form.controls.title.touched) {
+        <p class="field-error">Title is required.</p>
+      }
+
+      <label for="jobType">Job type</label>
+      <select id="jobType" formControlName="jobType">
+        <option [value]="JobType.FULL_TIME">Full time</option>
+        <option [value]="JobType.PART_TIME">Part time</option>
+        <option [value]="JobType.CONTRACT">Contract</option>
+        <option [value]="JobType.INTERNSHIP">Internship</option>
+      </select>
+
+      <label for="location">Location</label>
+      <input id="location" type="text" formControlName="location" placeholder="e.g. Remote, Bengaluru, IN" />
+
+      <label for="minSalary">Minimum salary</label>
+      <input id="minSalary" type="number" formControlName="minSalary" />
+
+      <label for="maxSalary">Maximum salary</label>
+      <input id="maxSalary" type="number" formControlName="maxSalary" />
+
+      <label for="description">Description</label>
+      <textarea id="description" rows="6" formControlName="description"></textarea>
+      @if (form.controls.description.invalid && form.controls.description.touched) {
+        <p class="field-error">Description is required.</p>
+      }
+
+      <label for="requirements">Requirements</label>
+      <textarea id="requirements" rows="5" formControlName="requirements"></textarea>
+
+      <button type="submit" [disabled]="isSaving()">
+        {{ isSaving() ? 'Saving…' : (isEditMode ? 'Save changes' : 'Create job') }}
+      </button>
+    </form>
+  }
+</div>

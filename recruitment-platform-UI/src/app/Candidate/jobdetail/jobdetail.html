@@ -1,0 +1,52 @@
+<div class="page">
+  <p><a routerLink="/candidate/jobs">&larr; Back to jobs</a></p>
+
+  @if (isLoading()) {
+    <p>Loading job…</p>
+  } @else if (error()) {
+    <div class="form-error" role="alert">
+      <p>{{ error() }}</p>
+      <button type="button" (click)="loadJob()">Retry</button>
+    </div>
+  } @else if (job(); as j) {
+    <div class="job-detail">
+      <div class="job-detail__header">
+        <div>
+          <h1>{{ j.title }}</h1>
+          <p class="job-card__meta">{{ j.companyName }} · {{ j.location || 'Remote / Unspecified' }}</p>
+        </div>
+        <span class="badge badge-type">{{ j.jobType | enumLabel }}</span>
+      </div>
+
+      @if (j.minSalary || j.maxSalary) {
+        <p class="hint">
+          Salary range: {{ j.minSalary ?? '—' }} – {{ j.maxSalary ?? '—' }}
+        </p>
+      }
+
+      @if (applyError()) {
+        <p class="form-error" role="alert">{{ applyError() }}</p>
+      }
+      @if (saveError()) {
+        <p class="form-error" role="alert">{{ saveError() }}</p>
+      }
+
+      <div class="job-detail__actions">
+        <button type="button" (click)="apply()" [disabled]="isApplying() || applied()">
+          {{ applied() ? 'Applied' : (isApplying() ? 'Submitting…' : 'Apply now') }}
+        </button>
+        <button type="button" class="secondary" (click)="toggleSave()" [disabled]="isSaving()">
+          {{ saved() ? 'Remove from saved' : 'Save job' }}
+        </button>
+      </div>
+
+      <h3>Description</h3>
+      <p class="job-detail__text">{{ j.description }}</p>
+
+      @if (j.requirements) {
+        <h3>Requirements</h3>
+        <p class="job-detail__text">{{ j.requirements }}</p>
+      }
+    </div>
+  }
+</div>

@@ -1,0 +1,47 @@
+<div class="page">
+  <h1>Browse Jobs</h1>
+
+  <form [formGroup]="filters" (ngSubmit)="applyFilters()" class="filter-bar">
+    <input type="text" formControlName="keyword" placeholder="Search by title or keyword" />
+    <input type="text" formControlName="location" placeholder="Location" />
+    <select formControlName="jobType">
+      <option value="">Any job type</option>
+      <option [value]="JobType.FULL_TIME">Full time</option>
+      <option [value]="JobType.PART_TIME">Part time</option>
+      <option [value]="JobType.CONTRACT">Contract</option>
+      <option [value]="JobType.INTERNSHIP">Internship</option>
+    </select>
+    <button type="submit">Search</button>
+  </form>
+
+  @if (isLoading()) {
+    <p>Loading jobs…</p>
+  } @else if (error()) {
+    <div class="form-error" role="alert">
+      <p>{{ error() }}</p>
+      <button type="button" (click)="loadJobs(currentPage())">Retry</button>
+    </div>
+  } @else if (result(); as r) {
+    @if (r.content.length === 0) {
+      <p class="hint">No jobs match your search. Try broadening your filters.</p>
+    } @else {
+      <div class="job-card-list">
+        @for (job of r.content; track job.id) {
+          <a class="job-card" [routerLink]="['/candidate/jobs', job.id]">
+            <div class="job-card__main">
+              <h3>{{ job.title }}</h3>
+              <p class="job-card__meta">{{ job.companyName }} · {{ job.location || 'Remote / Unspecified' }}</p>
+            </div>
+            <span class="badge badge-type">{{ job.jobType | enumLabel }}</span>
+          </a>
+        }
+      </div>
+
+      <div class="pagination">
+        <button type="button" (click)="prevPage()" [disabled]="r.pageNumber === 0">Previous</button>
+        <span>Page {{ r.pageNumber + 1 }} of {{ r.totalPages || 1 }}</span>
+        <button type="button" (click)="nextPage()" [disabled]="r.last">Next</button>
+      </div>
+    }
+  }
+</div>
