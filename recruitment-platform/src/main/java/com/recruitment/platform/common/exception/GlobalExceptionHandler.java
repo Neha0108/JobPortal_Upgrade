@@ -77,4 +77,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ApiResponse.error("A file storage error occurred. Please try again."));
     }
+
+    @ExceptionHandler(AiAnalysisException.class)
+    public ResponseEntity<ApiResponse<Void>> handleAiAnalysis(AiAnalysisException ex) {
+        log.error("AI analysis failed", ex);
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
+                .body(ApiResponse.error("AI analysis is temporarily unavailable. Please try again shortly."));
+    }
 }

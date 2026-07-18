@@ -102,7 +102,7 @@ public class ResumeService {
     }
 
     /** Package-private so ApplicationService (below) can validate a candidate-supplied resumeId too. */
-    Resume getOwnedResume(UUID userId, UUID resumeId) {
+    public Resume getOwnedResume(UUID userId, UUID resumeId) {
         CandidateProfile profile = candidateProfileService.getProfileEntityByUserId(userId);
         Resume resume = resumeRepository.findById(resumeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Resume not found."));
