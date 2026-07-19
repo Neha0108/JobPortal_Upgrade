@@ -1,43 +1,117 @@
-<div class="page">
-  <h1>Dashboard</h1>
+<div class="dashboard-page">
+
+  <div class="dashboard-header">
+    <div>
+      <h1>Welcome Back 👋</h1>
+      <p>Track your applications and monitor your career progress.</p>
+    </div>
+
+    <button class="refresh-btn" (click)="loadDashboard()">
+      <i class="fas fa-rotate-right"></i>
+      Refresh
+    </button>
+  </div>
 
   @if (isLoading()) {
-    <p>Loading your dashboard…</p>
-  } @else if (error()) {
-    <div class="form-error" role="alert">
-      <p>{{ error() }}</p>
-      <button type="button" (click)="loadDashboard()">Retry</button>
+
+    <div class="loading-state">
+      <div class="loader"></div>
+      <p>Loading your dashboard...</p>
     </div>
-  } @else if (stats(); as s) {
-    <div class="stat-grid">
-      <div class="stat-card">
-        <span class="stat-value">{{ s.totalApplications }}</span>
-        <span class="stat-label">Applications</span>
+
+  }
+
+  @else if (error()) {
+
+    <div class="error-card">
+
+      <i class="fas fa-circle-exclamation"></i>
+
+      <div>
+        <h3>Something went wrong</h3>
+        <p>{{ error() }}</p>
       </div>
-      <div class="stat-card">
-        <span class="stat-value">{{ s.shortlistedCount }}</span>
-        <span class="stat-label">Shortlisted</span>
+
+      <button (click)="loadDashboard()">
+        Retry
+      </button>
+
+    </div>
+
+  }
+
+  @else if (stats(); as s) {
+
+    <div class="stats-grid">
+
+      <div class="stat-card blue">
+        <i class="fas fa-file-lines"></i>
+        <div>
+          <h2>{{ s.totalApplications }}</h2>
+          <p>Total Applications</p>
+        </div>
       </div>
-      <div class="stat-card">
-        <span class="stat-value">{{ s.interviewCount }}</span>
-        <span class="stat-label">Interviews</span>
+
+      <div class="stat-card green">
+        <i class="fas fa-circle-check"></i>
+        <div>
+          <h2>{{ s.shortlistedCount }}</h2>
+          <p>Shortlisted</p>
+        </div>
       </div>
-      <div class="stat-card">
-        <span class="stat-value">{{ s.hiredCount }}</span>
-        <span class="stat-label">Hired</span>
+
+      <div class="stat-card orange">
+        <i class="fas fa-calendar-check"></i>
+        <div>
+          <h2>{{ s.interviewCount }}</h2>
+          <p>Interviews</p>
+        </div>
       </div>
-      <div class="stat-card">
-        <span class="stat-value">{{ s.savedJobsCount }}</span>
-        <span class="stat-label">Saved jobs</span>
+
+      <div class="stat-card purple">
+        <i class="fas fa-award"></i>
+        <div>
+          <h2>{{ s.hiredCount }}</h2>
+          <p>Hired</p>
+        </div>
       </div>
-      <div class="stat-card">
-        <span class="stat-value">{{ s.resumeCount }}</span>
-        <span class="stat-label">Resumes</span>
+
+      <div class="stat-card pink">
+        <i class="fas fa-bookmark"></i>
+        <div>
+          <h2>{{ s.savedJobsCount }}</h2>
+          <p>Saved Jobs</p>
+        </div>
       </div>
+
+      <div class="stat-card cyan">
+        <i class="fas fa-file-arrow-up"></i>
+        <div>
+          <h2>{{ s.resumeCount }}</h2>
+          <p>Resumes</p>
+        </div>
+      </div>
+
     </div>
 
     @if (s.resumeCount === 0) {
-      <p class="hint">You haven't uploaded a resume yet. Add one so recruiters can find you.</p>
+
+      <div class="resume-warning">
+
+        <i class="fas fa-triangle-exclamation"></i>
+
+        <div>
+          <h3>No Resume Uploaded</h3>
+          <p>
+            Upload a professional resume to improve your visibility
+            and increase your chances of getting shortlisted.
+          </p>
+        </div>
+
+      </div>
+
     }
+
   }
+
 </div>

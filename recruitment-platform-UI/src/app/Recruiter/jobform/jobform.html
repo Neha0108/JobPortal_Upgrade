@@ -1,56 +1,294 @@
-<div class="page">
-  <p><a routerLink="/recruiter/jobs">&larr; Back to my jobs</a></p>
-  <h1>{{ isEditMode ? 'Edit Job' : 'Post a Job' }}</h1>
+<div class="job-page">
 
-  @if (isLoading()) {
-    <p>Loading job…</p>
-  } @else if (loadError()) {
-    <div class="form-error" role="alert">{{ loadError() }}</div>
-  } @else {
-    <form [formGroup]="form" (ngSubmit)="submit()" class="form" novalidate>
-      @if (isEditMode) {
-        <p class="hint">New jobs are created as drafts. Use "Open" on the job list to publish once ready.</p>
-      }
+    <a routerLink="/recruiter/jobs" class="back-link">
 
-      @if (saveError()) {
-        <p class="form-error" role="alert">{{ saveError() }}</p>
-      }
+        <i class="fas fa-arrow-left"></i>
 
-      <label for="title">Job title</label>
-      <input id="title" type="text" formControlName="title" />
-      @if (form.controls.title.invalid && form.controls.title.touched) {
-        <p class="field-error">Title is required.</p>
-      }
+        Back to My Jobs
 
-      <label for="jobType">Job type</label>
-      <select id="jobType" formControlName="jobType">
-        <option [value]="JobType.FULL_TIME">Full time</option>
-        <option [value]="JobType.PART_TIME">Part time</option>
-        <option [value]="JobType.CONTRACT">Contract</option>
-        <option [value]="JobType.INTERNSHIP">Internship</option>
-      </select>
+    </a>
 
-      <label for="location">Location</label>
-      <input id="location" type="text" formControlName="location" placeholder="e.g. Remote, Bengaluru, IN" />
+    <div class="page-header">
 
-      <label for="minSalary">Minimum salary</label>
-      <input id="minSalary" type="number" formControlName="minSalary" />
+        <div>
 
-      <label for="maxSalary">Maximum salary</label>
-      <input id="maxSalary" type="number" formControlName="maxSalary" />
+            <h1>
 
-      <label for="description">Description</label>
-      <textarea id="description" rows="6" formControlName="description"></textarea>
-      @if (form.controls.description.invalid && form.controls.description.touched) {
-        <p class="field-error">Description is required.</p>
-      }
+                {{isEditMode ? 'Edit Job' : 'Post a New Job'}}
 
-      <label for="requirements">Requirements</label>
-      <textarea id="requirements" rows="5" formControlName="requirements"></textarea>
+            </h1>
 
-      <button type="submit" [disabled]="isSaving()">
-        {{ isSaving() ? 'Saving…' : (isEditMode ? 'Save changes' : 'Create job') }}
-      </button>
-    </form>
-  }
+            <p>
+
+                Create an attractive job listing to reach qualified candidates.
+
+            </p>
+
+        </div>
+
+    </div>
+
+    @if(isLoading()){
+
+    <div class="loading-state">
+
+        <div class="loader"></div>
+
+        <p>Loading job...</p>
+
+    </div>
+
+    }
+
+    @else if(loadError()){
+
+    <div class="error-card">
+
+        <i class="fas fa-circle-exclamation"></i>
+
+        <div>
+
+            <h3>Unable to load job</h3>
+
+            <p>{{loadError()}}</p>
+
+        </div>
+
+    </div>
+
+    }
+
+    @else{
+
+    <div class="job-layout">
+
+        <!-- Preview Card -->
+
+        <div class="preview-card">
+
+            <div class="preview-icon">
+
+                <i class="fas fa-briefcase"></i>
+
+            </div>
+
+            <h2>
+
+                {{form.value.title || 'Job Title'}}
+
+            </h2>
+
+            <p class="job-type">
+
+                {{form.value.jobType || 'Job Type'}}
+
+            </p>
+
+            <div class="preview-meta">
+
+                <div>
+
+                    <i class="fas fa-location-dot"></i>
+
+                    {{form.value.location || 'Location'}}
+
+                </div>
+
+                <div>
+
+                    <i class="fas fa-indian-rupee-sign"></i>
+
+                    {{form.value.minSalary || '0'}}
+
+                    -
+
+                    {{form.value.maxSalary || '0'}}
+
+                </div>
+
+            </div>
+
+            <div class="preview-info">
+
+                <h4>Description</h4>
+
+                <p>
+
+                    {{form.value.description || 'Job description preview...' }}
+
+                </p>
+
+            </div>
+
+            <div class="preview-info">
+
+                <h4>Requirements</h4>
+
+                <p>
+
+                    {{form.value.requirements || 'Candidate requirements...' }}
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- Form -->
+
+        <div class="form-card">
+
+            @if(isEditMode){
+
+            <div class="info-banner">
+
+                <i class="fas fa-circle-info"></i>
+
+                Jobs are created as drafts. Publish them from the Jobs page when ready.
+
+            </div>
+
+            }
+
+            @if(saveError()){
+
+            <div class="alert error">
+
+                {{saveError()}}
+
+            </div>
+
+            }
+
+            <form
+                [formGroup]="form"
+                (ngSubmit)="submit()">
+
+                <div class="form-group">
+
+                    <label>Job Title</label>
+
+                    <input
+                        type="text"
+                        formControlName="title"
+                        placeholder="Senior Java Developer">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Job Type</label>
+
+                    <select formControlName="jobType">
+
+                        <option [value]="JobType.FULL_TIME">
+
+                            Full Time
+
+                        </option>
+
+                        <option [value]="JobType.PART_TIME">
+
+                            Part Time
+
+                        </option>
+
+                        <option [value]="JobType.CONTRACT">
+
+                            Contract
+
+                        </option>
+
+                        <option [value]="JobType.INTERNSHIP">
+
+                            Internship
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Location</label>
+
+                    <input
+                        type="text"
+                        formControlName="location"
+                        placeholder="Remote, Bengaluru">
+
+                </div>
+
+                <div class="salary-grid">
+
+                    <div class="form-group">
+
+                        <label>Minimum Salary</label>
+
+                        <input
+                            type="number"
+                            formControlName="minSalary">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Maximum Salary</label>
+
+                        <input
+                            type="number"
+                            formControlName="maxSalary">
+
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Description</label>
+
+                    <textarea
+                        rows="6"
+                        formControlName="description">
+                    </textarea>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Requirements</label>
+
+                    <textarea
+                        rows="5"
+                        formControlName="requirements">
+                    </textarea>
+
+                </div>
+
+                <button
+                    class="primary-btn"
+                    type="submit"
+                    [disabled]="isSaving()">
+
+                    {{isSaving()
+
+                    ? 'Saving...'
+
+                    : (isEditMode
+
+                    ? 'Save Changes'
+
+                    : 'Create Job')}}
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    }
+
 </div>

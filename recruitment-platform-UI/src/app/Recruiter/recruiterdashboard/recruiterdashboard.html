@@ -1,43 +1,251 @@
-<div class="page">
-  <h1>Dashboard</h1>
+<div class="dashboard-page">
 
-  @if (isLoading()) {
-    <p>Loading your dashboard…</p>
-  } @else if (error()) {
-    <div class="form-error" role="alert">
-      <p>{{ error() }}</p>
-      <button type="button" (click)="loadDashboard()">Retry</button>
+    <div class="dashboard-header">
+
+        <div>
+
+            <h1>Recruiter Dashboard</h1>
+
+            <p>
+
+                Welcome back. Here's an overview of your hiring activity.
+
+            </p>
+
+        </div>
+
+        <a
+            routerLink="/recruiter/jobs/new"
+            class="create-job-btn">
+
+            <i class="fas fa-plus"></i>
+
+            Post New Job
+
+        </a>
+
     </div>
-  } @else if (stats(); as s) {
-    <div class="stat-grid">
-      <div class="stat-card">
-        <span class="stat-value">{{ s.totalJobsPosted }}</span>
-        <span class="stat-label">Jobs posted</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-value">{{ s.openJobs }}</span>
-        <span class="stat-label">Open</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-value">{{ s.draftJobs }}</span>
-        <span class="stat-label">Drafts</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-value">{{ s.closedJobs }}</span>
-        <span class="stat-label">Closed</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-value">{{ s.totalApplicants }}</span>
-        <span class="stat-label">Applicants</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-value">{{ s.shortlistedCount }}</span>
-        <span class="stat-label">Shortlisted</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-value">{{ s.hiredCount }}</span>
-        <span class="stat-label">Hired</span>
-      </div>
+
+    @if(isLoading()){
+
+    <div class="loading-state">
+
+        <div class="loader"></div>
+
+        <p>Loading dashboard...</p>
+
     </div>
-  }
+
+    }
+
+    @else if(error()){
+
+    <div class="error-card">
+
+        <i class="fas fa-circle-exclamation"></i>
+
+        <div>
+
+            <h3>Unable to load dashboard</h3>
+
+            <p>{{error()}}</p>
+
+            <button (click)="loadDashboard()">
+
+                Retry
+
+            </button>
+
+        </div>
+
+    </div>
+
+    }
+
+    @else if(stats(); as s){
+
+    <!-- Statistics -->
+
+    <div class="stats-grid">
+
+        <div class="stat-card blue">
+
+            <i class="fas fa-briefcase"></i>
+
+            <span>{{s.totalJobsPosted}}</span>
+
+            <p>Total Jobs</p>
+
+        </div>
+
+        <div class="stat-card green">
+
+            <i class="fas fa-lock-open"></i>
+
+            <span>{{s.openJobs}}</span>
+
+            <p>Open Jobs</p>
+
+        </div>
+
+        <div class="stat-card orange">
+
+            <i class="fas fa-file"></i>
+
+            <span>{{s.draftJobs}}</span>
+
+            <p>Draft Jobs</p>
+
+        </div>
+
+        <div class="stat-card red">
+
+            <i class="fas fa-lock"></i>
+
+            <span>{{s.closedJobs}}</span>
+
+            <p>Closed Jobs</p>
+
+        </div>
+
+        <div class="stat-card purple">
+
+            <i class="fas fa-users"></i>
+
+            <span>{{s.totalApplicants}}</span>
+
+            <p>Applicants</p>
+
+        </div>
+
+        <div class="stat-card emerald">
+
+            <i class="fas fa-user-check"></i>
+
+            <span>{{s.shortlistedCount}}</span>
+
+            <p>Shortlisted</p>
+
+        </div>
+
+        <div class="stat-card gold">
+
+            <i class="fas fa-award"></i>
+
+            <span>{{s.hiredCount}}</span>
+
+            <p>Hired</p>
+
+        </div>
+
+    </div>
+
+    <!-- Bottom Grid -->
+
+    <div class="dashboard-grid">
+
+        <!-- Hiring Progress -->
+
+        <div class="dashboard-card">
+
+            <h2>
+
+                Hiring Progress
+
+            </h2>
+
+            <div class="progress-row">
+
+                <span>Applicants</span>
+
+                <strong>{{s.totalApplicants}}</strong>
+
+            </div>
+
+            <div class="progress-row">
+
+                <span>Shortlisted</span>
+
+                <strong>{{s.shortlistedCount}}</strong>
+
+            </div>
+
+            <div class="progress-row">
+
+                <span>Hired</span>
+
+                <strong>{{s.hiredCount}}</strong>
+
+            </div>
+
+        </div>
+
+        <!-- Quick Actions -->
+
+        <div class="dashboard-card">
+
+            <h2>
+
+                Quick Actions
+
+            </h2>
+
+            <div class="quick-actions">
+
+                <a routerLink="/recruiter/jobs/new">
+
+                    <i class="fas fa-plus-circle"></i>
+
+                    Post Job
+
+                </a>
+
+                <a routerLink="/recruiter/jobs">
+
+                    <i class="fas fa-briefcase"></i>
+
+                    Manage Jobs
+
+                </a>
+
+                <a routerLink="/recruiter/company">
+
+                    <i class="fas fa-building"></i>
+
+                    Company Profile
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <!-- AI Insights Placeholder -->
+
+        <div class="dashboard-card">
+
+            <h2>
+
+                AI Hiring Insights
+
+            </h2>
+
+            <div class="ai-box">
+
+                <i class="fas fa-robot"></i>
+
+                <p>
+
+                    AI recommendations and hiring insights will appear here.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    }
+
 </div>

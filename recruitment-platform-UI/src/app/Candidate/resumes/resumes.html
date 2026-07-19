@@ -1,0 +1,189 @@
+<div class="resume-page">
+
+    <div class="page-header">
+
+        <div>
+
+            <h1>My Resumes</h1>
+
+            <p>Manage your resumes and choose which one recruiters see.</p>
+
+        </div>
+
+    </div>
+
+    <!-- Upload -->
+
+    <div class="upload-card">
+
+        <label
+            for="resumeFile"
+            class="upload-area"
+            [class.uploading]="isUploading()">
+
+            @if(isUploading()){
+
+                <div class="loader"></div>
+
+                <h3>Uploading Resume...</h3>
+
+            }
+
+            @else{
+
+                <i class="fas fa-cloud-upload-alt"></i>
+
+                <h3>Upload Resume</h3>
+
+                <p>Drag & Drop or Click to Browse</p>
+
+                <small>PDF or DOCX • Maximum 5 MB</small>
+
+            }
+
+        </label>
+
+        <input
+            id="resumeFile"
+            type="file"
+            #fileInput
+            accept=".pdf,.docx"
+            hidden
+            [disabled]="isUploading()"
+            (change)="onFileSelected($event)">
+
+    </div>
+
+    @if(isLoading()){
+
+        <app-loading-state
+            variant="skeleton"
+            [rows]="3"
+            label="Loading resumes..."/>
+
+    }
+
+    @else if(loadError()){
+
+        <app-error-state
+            [message]="loadError()!"
+            (retry)="loadResumes()"/>
+
+    }
+
+    @else if(resumes().length===0){
+
+        <app-empty-state
+            icon="📄"
+            title="No Resume Uploaded"
+            message="Upload your first resume to start applying for jobs."/>
+
+    }
+
+    @else{
+
+    <div class="resume-grid">
+
+        @for(resume of resumes(); track resume.id){
+
+        <div class="resume-card">
+
+            <div class="resume-top">
+
+                <div class="resume-icon">
+
+                    <i class="fas fa-file-pdf"></i>
+
+                </div>
+
+                @if(resume.primary){
+
+                    <span class="primary-badge">
+
+                        Primary
+
+                    </span>
+
+                }
+
+            </div>
+
+            <h3>
+
+                {{resume.fileName}}
+
+            </h3>
+
+            <div class="resume-meta">
+
+                <p>
+
+                    <i class="fas fa-weight-hanging"></i>
+
+                    {{formatFileSize(resume.fileSize)}}
+
+                </p>
+
+                <p>
+
+                    <i class="fas fa-calendar"></i>
+
+                    {{resume.uploadedAt | date:'mediumDate'}}
+
+                </p>
+
+            </div>
+
+            <div class="resume-actions">
+
+                <button
+                    class="primary-btn"
+                    (click)="downloadResume(resume)">
+
+                    <i class="fas fa-download"></i>
+
+                    Download
+
+                </button>
+
+                @if(!resume.primary){
+
+                <button
+                    class="secondary-btn"
+                    [disabled]="pendingActionId()===resume.id"
+                    (click)="setPrimary(resume)">
+
+                    Make Primary
+
+                </button>
+
+                }
+
+                <button
+                    class="danger-btn"
+                    [disabled]="pendingActionId()===resume.id"
+                    (click)="deleteResume(resume)">
+
+                    Delete
+
+                </button>
+
+            </div>
+
+            <a
+                class="analysis-link"
+                [routerLink]="['/candidate/ai-analysis', resume.id, 'analysis']">
+
+                🤖 Analyze Resume →
+
+            </a>
+
+        </div>
+
+        }
+
+    </div>
+
+    }
+
+</div>

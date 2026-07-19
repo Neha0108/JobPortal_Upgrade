@@ -1,0 +1,315 @@
+.auth-container{
+
+    min-height:100vh;
+
+    display:grid;
+
+    grid-template-columns:1fr 520px;
+
+    background:#f8fafc;
+
+}
+
+.auth-banner{
+
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+
+    color:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:60px;
+
+}
+
+.banner-content{
+
+    max-width:500px;
+
+}
+
+.brand-logo{
+
+    width:90px;
+
+    height:90px;
+
+    border-radius:22px;
+
+    background:rgba(255,255,255,.15);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:40px;
+
+    margin-bottom:30px;
+
+}
+
+.banner-content h1{
+
+    font-size:3rem;
+
+    margin-bottom:20px;
+
+}
+
+.banner-content p{
+
+    opacity:.9;
+
+    line-height:1.8;
+
+    margin-bottom:40px;
+
+}
+
+.feature-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+.feature-list div{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+}
+
+.feature-list i{
+
+    color:#bbf7d0;
+
+}
+
+.auth-content{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:40px;
+
+}
+
+.auth-card{
+
+    width:100%;
+
+    max-width:460px;
+
+    background:white;
+
+    border-radius:22px;
+
+    padding:40px;
+
+    border:1px solid var(--border);
+
+    box-shadow:var(--shadow-lg);
+
+}
+
+.auth-header{
+
+    margin-bottom:30px;
+
+}
+
+.auth-header p{
+
+    color:var(--text-light);
+
+}
+
+.auth-btn{
+
+    width:100%;
+
+    margin-top:10px;
+
+}
+
+/* Role Selection */
+
+.role-selection{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:16px;
+
+    margin-top:10px;
+
+}
+
+.role-card{
+
+    position:relative;
+
+    cursor:pointer;
+
+}
+
+.role-card input{
+
+    position:absolute;
+
+    opacity:0;
+
+}
+
+.role-card div{
+
+    border:2px solid var(--border);
+
+    border-radius:16px;
+
+    padding:22px;
+
+    text-align:center;
+
+    transition:.25s;
+
+}
+
+.role-card i{
+
+    font-size:30px;
+
+    color:var(--primary);
+
+    margin-bottom:14px;
+
+}
+
+.role-card h4{
+
+    margin-bottom:8px;
+
+}
+
+.role-card p{
+
+    color:var(--text-light);
+
+    font-size:.9rem;
+
+}
+
+.role-card input:checked + div{
+
+    border-color:var(--primary);
+
+    background:var(--primary-light);
+
+}
+
+.divider{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    margin:28px 0;
+
+}
+
+.divider span{
+
+    flex:1;
+
+    height:1px;
+
+    background:var(--border);
+
+}
+
+.divider small{
+
+    color:var(--text-light);
+
+}
+
+.register-link{
+
+    text-align:center;
+
+    color:var(--text-light);
+
+}
+
+.register-link a{
+
+    color:var(--primary);
+
+    text-decoration:none;
+
+    font-weight:600;
+
+}
+
+.field-error{
+
+    display:block;
+
+    color:var(--danger);
+
+    margin-top:6px;
+
+}
+
+@media(max-width:992px){
+
+.auth-container{
+
+    grid-template-columns:1fr;
+
+}
+
+.auth-banner{
+
+    display:none;
+
+}
+
+.auth-content{
+
+    padding:24px;
+
+}
+
+.auth-card{
+
+    max-width:100%;
+
+}
+
+.role-selection{
+
+    grid-template-columns:1fr;
+
+}
+
+}

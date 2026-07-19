@@ -1,0 +1,223 @@
+<div class="education-page">
+
+    <div class="page-header">
+        <div>
+            <h1>Education</h1>
+            <p>Manage your academic qualifications.</p>
+        </div>
+    </div>
+
+    <div class="education-layout">
+
+        <!-- Form -->
+        <div class="form-card">
+
+            <h2>
+                {{ editingId() ? 'Edit Education' : 'Add Education' }}
+            </h2>
+
+            @if(saveError()){
+                <div class="alert error">
+                    {{saveError()}}
+                </div>
+            }
+
+            <form
+                [formGroup]="form"
+                (ngSubmit)="submit()">
+
+                <div class="form-group">
+
+                    <label>Institution</label>
+
+                    <input
+                        type="text"
+                        formControlName="institution"
+                        placeholder="University / College">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Degree</label>
+
+                    <input
+                        type="text"
+                        formControlName="degree"
+                        placeholder="B.Tech">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Field of Study</label>
+
+                    <input
+                        type="text"
+                        formControlName="fieldOfStudy"
+                        placeholder="Computer Science">
+
+                </div>
+
+                <div class="date-grid">
+
+                    <div class="form-group">
+
+                        <label>Start Date</label>
+
+                        <input
+                            type="date"
+                            formControlName="startDate">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>End Date</label>
+
+                        <input
+                            type="date"
+                            formControlName="endDate">
+
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+
+                    <button
+                        class="primary-btn"
+                        type="submit">
+
+                        {{editingId()
+                        ? 'Save Changes'
+                        : 'Add Education'}}
+
+                    </button>
+
+                    @if(editingId()){
+
+                    <button
+                        class="secondary-btn"
+                        type="button"
+                        (click)="cancelEdit()">
+
+                        Cancel
+
+                    </button>
+
+                    }
+
+                </div>
+
+            </form>
+
+        </div>
+
+        <!-- List -->
+
+        <div class="history-card">
+
+            <h2>Education History</h2>
+
+            @if(isLoading()){
+
+            <div class="loading">
+                Loading...
+            </div>
+
+            }
+
+            @else if(error()){
+
+            <div class="alert error">
+
+                {{error()}}
+
+            </div>
+
+            }
+
+            @else if(entries().length===0){
+
+            <div class="empty-state">
+
+                🎓
+
+                <h3>No Education Added</h3>
+
+                <p>Add your educational qualifications.</p>
+
+            </div>
+
+            }
+
+            @else{
+
+            <div class="timeline">
+
+                @for(entry of entries(); track entry.id){
+
+                <div class="timeline-card">
+
+                    <div class="timeline-dot"></div>
+
+                    <div class="timeline-content">
+
+                        <h3>{{entry.degree}}</h3>
+
+                        <h4>{{entry.institution}}</h4>
+
+                        @if(entry.fieldOfStudy){
+
+                        <p>{{entry.fieldOfStudy}}</p>
+
+                        }
+
+                        <small>
+
+                            {{entry.startDate | date:'MMM yyyy'}}
+
+                            -
+
+                            {{entry.endDate
+                            ? (entry.endDate | date:'MMM yyyy')
+                            : 'Present'}}
+
+                        </small>
+
+                        <div class="card-actions">
+
+                            <button
+                                class="secondary-btn"
+                                (click)="startEdit(entry)">
+
+                                Edit
+
+                            </button>
+
+                            <button
+                                class="danger-btn"
+                                (click)="delete(entry.id)">
+
+                                Delete
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                }
+
+            </div>
+
+            }
+
+        </div>
+
+    </div>
+
+</div>

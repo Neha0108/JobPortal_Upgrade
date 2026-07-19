@@ -1,0 +1,159 @@
+.saved-job-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+
+    gap: 24px;
+
+}
+
+.saved-job-card {
+
+    background: #fff;
+
+    border: 1px solid var(--border);
+
+    border-radius: 18px;
+
+    padding: 22px;
+
+    box-shadow: var(--shadow-md);
+
+    transition: .25s;
+
+}
+
+.saved-job-card:hover {
+
+    transform: translateY(-4px);
+
+    box-shadow: var(--shadow-lg);
+
+}
+
+.saved-job-top {
+
+    display: flex;
+
+    gap: 16px;
+
+    align-items: center;
+
+    margin-bottom: 20px;
+
+}
+
+.company-logo {
+
+    width: 60px;
+
+    height: 60px;
+
+    border-radius: 16px;
+
+    background: var(--primary-light);
+
+    color: var(--primary);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 22px;
+
+}
+
+.saved-job-info h2 {
+
+    margin: 0;
+
+    font-size: 1.2rem;
+
+    color: var(--text);
+
+}
+
+.saved-job-info p {
+
+    margin-top: 6px;
+
+    color: var(--text-light);
+
+}
+
+.saved-job-meta {
+
+    display: flex;
+
+    gap: 18px;
+
+    margin-bottom: 24px;
+
+    color: var(--text-light);
+
+    font-size: .95rem;
+
+}
+
+.saved-job-meta span {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+}
+
+.saved-job-actions {
+
+    display: flex;
+
+    gap: 12px;
+
+}
+
+.saved-job-actions .btn {
+
+    flex: 1;
+
+}
+
+.pagination {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 18px;
+
+    flex-wrap: wrap;
+
+}
+
+@media(max-width:768px) {
+
+    .saved-job-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .saved-job-actions {
+
+        flex-direction: column;
+
+    }
+
+    .pagination {
+
+        flex-direction: column;
+
+    }
+
+}

@@ -1,0 +1,208 @@
+<div class="skills-page">
+
+  <div class="page-header">
+
+    <div>
+
+      <h1>Skills</h1>
+
+      <p>
+
+        Highlight your technical and professional skills for recruiters.
+
+      </p>
+
+    </div>
+
+  </div>
+
+  <div class="skills-layout">
+
+    <!-- Add Skill -->
+
+    <div class="card">
+
+      <h2>Add Skill</h2>
+
+      @if(saveError()){
+
+      <div class="alert alert-danger">
+
+        {{saveError()}}
+
+      </div>
+
+      }
+
+      <form [formGroup]="form" (ngSubmit)="submit()" class="form">
+
+        <div class="form-group">
+
+          <label>Skill Name</label>
+
+          <input type="text" formControlName="skillName" placeholder="Angular, Java, Spring Boot">
+
+          @if(form.controls.skillName.invalid &&
+          form.controls.skillName.touched){
+
+          <small class="field-error">
+
+            Skill name is required.
+
+          </small>
+
+          }
+
+        </div>
+
+        <div class="form-group">
+
+          <label>Proficiency</label>
+
+          <select formControlName="proficiencyLevel">
+
+            <option [value]="ProficiencyLevel.BEGINNER">
+
+              Beginner
+
+            </option>
+
+            <option [value]="ProficiencyLevel.INTERMEDIATE">
+
+              Intermediate
+
+            </option>
+
+            <option [value]="ProficiencyLevel.ADVANCED">
+
+              Advanced
+
+            </option>
+
+            <option [value]="ProficiencyLevel.EXPERT">
+
+              Expert
+
+            </option>
+
+          </select>
+
+        </div>
+
+        <button class="btn btn-primary" type="submit" [disabled]="isSaving()">
+
+          {{isSaving()
+
+          ? 'Adding...'
+
+          : 'Add Skill'}}
+
+        </button>
+
+      </form>
+
+    </div>
+
+    <!-- Skills List -->
+
+    <div class="card">
+
+      <h2>My Skills</h2>
+
+      @if(isLoading()){
+
+      <div class="loading">
+
+        <div class="spinner"></div>
+
+        <p>Loading skills...</p>
+
+      </div>
+
+      }
+
+      @else if(error()){
+
+      <div class="alert alert-danger">
+
+        <p>{{error()}}</p>
+
+        <button class="btn btn-danger mt-2" (click)="load()">
+
+          Retry
+
+        </button>
+
+      </div>
+
+      }
+
+      @else if(skills().length===0){
+
+      <div class="empty-state">
+
+        <i class="fas fa-code"></i>
+
+        <h3>No Skills Added</h3>
+
+        <p>
+
+          Add your first skill to strengthen your profile.
+
+        </p>
+
+      </div>
+
+      }
+
+      @else{
+
+      <div class="skills-list">
+
+        @for(skill of skills(); track skill.id){
+
+        <div class="skill-card">
+
+          <div>
+
+            <h3>
+
+              {{skill.skillName}}
+
+            </h3>
+
+            <span class="badge" [ngClass]="{
+
+                              'badge-success':skill.proficiencyLevel===ProficiencyLevel.EXPERT,
+
+                              'badge-info':skill.proficiencyLevel===ProficiencyLevel.ADVANCED,
+
+                              'badge-warning':skill.proficiencyLevel===ProficiencyLevel.INTERMEDIATE,
+
+                              'badge-danger':skill.proficiencyLevel===ProficiencyLevel.BEGINNER
+
+                            }">
+
+              {{skill.proficiencyLevel | enumLabel}}
+
+            </span>
+
+          </div>
+
+          <button class="btn btn-danger" [disabled]="pendingDeleteId()===skill.id" (click)="delete(skill.id)" >
+            Delete
+          </button>
+
+        </div>
+
+        }
+
+      </div>
+
+      }
+
+    </div>
+
+  </div>
+
+</div>

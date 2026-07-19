@@ -13,18 +13,27 @@ import { Role } from './models/role.enum';
 import { Recruiterlayout } from './Recruiter/recruiterlayout/recruiterlayout';
 import { Recruiterdashboard } from './Recruiter/recruiterdashboard/recruiterdashboard';
 import { Recruiterprofile } from './Recruiter/recruiterprofile/recruiterprofile';
-import { Company } from './company/company';
 import { Candidatejob } from './Candidate/candidatejob/candidatejob';
 import { Jobdetail } from './Candidate/jobdetail/jobdetail';
 import { Applications } from './Candidate/applications/applications';
 import { Savedjobs } from './Candidate/savedjobs/savedjobs';
+import { Resumes } from './Candidate/resumes/resumes';
 import { RecruiterJob } from './Recruiter/recruiter-job/recruiter-job';
 import { Jobform } from './Recruiter/jobform/jobform';
 import { Jobapplicants } from './Recruiter/jobapplicants/jobapplicants';
+import { Unauthorized } from './Auth/unauthorized/unauthorized';
+import { NotFound } from './Auth/not-found/not-found';
+import { Company } from './Recruiter/company/company';
+import { Skills } from './Candidate/skills/skills';
+import { Education } from './Candidate/education/education';
+import { Experience } from './Candidate/experience/experience';
+import { ResumeAnalysis } from './Candidate/resume-analysis/resume-analysis';
 
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'auth/login' },
+
+  { path: 'unauthorized', component: Unauthorized },
 
   {
     path: 'auth',
@@ -49,7 +58,12 @@ export const routes: Routes = [
       { path: 'jobs', component: Candidatejob},
       { path: 'jobs/:jobId', component: Jobdetail},
       { path: 'applications', component:Applications},
-      { path: 'saved-jobs', component: Savedjobs}
+      { path: 'saved-jobs', component: Savedjobs},
+      { path: 'resumes', component: Resumes},
+      { path: 'skills', component: Skills},
+      { path: 'education', component: Education},
+      { path: 'experience', component: Experience},
+      { path: 'ai-analysis', component: ResumeAnalysis}
     ],
   },
   {
@@ -70,5 +84,5 @@ export const routes: Routes = [
     ],
   },
 
-  { path: '**', redirectTo: 'auth/login' },
+  { path: '**', component: NotFound },
 ];

@@ -1,22 +1,115 @@
-<div class="app-shell">
-  <header class="app-header">
-    <span class="app-brand">Recruitment Platform</span>
-    <nav class="app-nav">
-      <a routerLink="/candidate/dashboard" routerLinkActive="active">Dashboard</a>
-      <a routerLink="/candidate/jobs" routerLinkActive="active">Browse Jobs</a>
-      <a routerLink="/candidate/applications" routerLinkActive="active">My Applications</a>
-      <a routerLink="/candidate/saved-jobs" routerLinkActive="active">Saved Jobs</a>
-      <a routerLink="/candidate/profile" routerLinkActive="active">My Profile</a>
-    </nav>
-    <div class="app-user">
-      @if (currentUser(); as user) {
-        <span>{{ user.email }}</span>
-      }
-      <button type="button" (click)="logout()">Sign out</button>
-    </div>
-  </header>
+<div class="dashboard-layout">
 
-  <main class="app-content">
-    <router-outlet></router-outlet>
-  </main>
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.open]="sidebarOpen">
+
+    <div class="logo">
+      <div class="logo-icon">R</div>
+      <span>RecruitAI</span>
+    </div>
+
+    <nav>
+
+      <a routerLink="/candidate/dashboard" routerLinkActive="active">
+        <i class="fas fa-chart-line"></i>
+        <span>Dashboard</span>
+      </a>
+
+      <a routerLink="/candidate/jobs" routerLinkActive="active">
+        <i class="fas fa-briefcase"></i>
+        <span>Browse Jobs</span>
+      </a>
+
+      <a routerLink="/candidate/applications" routerLinkActive="active">
+        <i class="fas fa-file-alt"></i>
+        <span>Applications</span>
+      </a>
+
+      <a routerLink="/candidate/saved-jobs" routerLinkActive="active">
+        <i class="fas fa-bookmark"></i>
+        <span>Saved Jobs</span>
+      </a>
+
+      <a routerLink="/candidate/resumes" routerLinkActive="active">
+        <i class="fas fa-file-upload"></i>
+        <span>Resumes</span>
+      </a>
+
+      <a routerLink="/candidate/education" routerLinkActive="active">
+        <i class="fas fa-graduation-cap"></i>
+        <span>Education</span>
+      </a>
+
+      <a routerLink="/candidate/experience" routerLinkActive="active">
+        <i class="fas fa-briefcase"></i>
+        <span>Experience</span>
+      </a>
+
+      <a routerLink="/candidate/skills" routerLinkActive="active">
+        <i class="fas fa-code"></i>
+        <span>Skills</span>
+      </a>
+
+      <a routerLink="/candidate/profile" routerLinkActive="active">
+        <i class="fas fa-user"></i>
+        <span>Profile</span>
+      </a>
+
+    </nav>
+
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-content">
+
+    <header class="topbar">
+
+      <button class="menu-btn" (click)="sidebarOpen = !sidebarOpen">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <div>
+        <h2>Candidate Portal</h2>
+        <p>Welcome back</p>
+      </div>
+
+      <div class="user-section">
+
+        @if(currentUser(); as user){
+
+          <div class="user-card">
+
+            <div class="avatar">
+              {{ user.email.charAt(0).toUpperCase() }}
+            </div>
+
+            <div>
+              <h4>{{user.email}}</h4>
+              <small>Candidate</small>
+            </div>
+
+          </div>
+
+        }
+
+        <button class="logout-btn" (click)="logout()">
+          Sign Out
+        </button>
+
+      </div>
+
+    </header>
+
+    <main class="page-content">
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>
+
+</div>
+
+<div
+    class="sidebar-overlay"
+    *ngIf="sidebarOpen"
+    (click)="sidebarOpen=false">
 </div>

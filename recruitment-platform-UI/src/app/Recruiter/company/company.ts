@@ -1,8 +1,9 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CompanyService } from '../services/company/company';
-import { CompanyResponse } from '../models/recruiter';
+
 import { HttpErrorResponse } from '@angular/common/http';
+import { CompanyService } from '../../services/company/company';
+import { CompanyResponse } from '../../models/recruiter';
 
 @Component({
   selector: 'app-company',

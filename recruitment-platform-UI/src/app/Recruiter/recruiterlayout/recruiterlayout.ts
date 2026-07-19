@@ -13,6 +13,8 @@ export class Recruiterlayout {
 
   readonly currentUser = this.authService.currentUser;
 
+  sidebarOpen = false;
+
   logout(): void {
     this.authService.logout();
   }

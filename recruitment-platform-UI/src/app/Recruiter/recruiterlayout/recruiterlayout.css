@@ -1,0 +1,432 @@
+*{
+    box-sizing:border-box;
+}
+
+.layout{
+    display:flex;
+    min-height:100vh;
+    background:#f8fafc;
+}
+
+/* ================= Sidebar ================= */
+
+.sidebar{
+
+    width:280px;
+
+    background:#0f172a;
+
+    color:#fff;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+
+    transition:.3s;
+
+    z-index:1000;
+}
+
+.sidebar-header{
+
+    padding:30px 24px;
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.brand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+}
+
+.brand-icon{
+
+    width:52px;
+
+    height:52px;
+
+    border-radius:14px;
+
+    background:#2563eb;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:22px;
+}
+
+.brand h2{
+
+    margin:0;
+
+    font-size:1.2rem;
+}
+
+.brand span{
+
+    color:#94a3b8;
+
+    font-size:.85rem;
+}
+
+/* Navigation */
+
+.sidebar-nav{
+
+    padding:22px 14px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+}
+
+.sidebar-nav a{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    text-decoration:none;
+
+    color:#cbd5e1;
+
+    padding:14px 16px;
+
+    border-radius:14px;
+
+    transition:.25s;
+
+    font-weight:500;
+}
+
+.sidebar-nav a i{
+
+    width:20px;
+
+    text-align:center;
+}
+
+.sidebar-nav a:hover{
+
+    background:#1e293b;
+
+    color:#fff;
+}
+
+.sidebar-nav a.active{
+
+    background:#2563eb;
+
+    color:#fff;
+}
+
+/* Footer */
+
+.sidebar-footer{
+
+    padding:20px;
+
+    border-top:1px solid rgba(255,255,255,.08);
+}
+
+.profile-card{
+
+    display:flex;
+
+    gap:12px;
+
+    align-items:center;
+
+    margin-bottom:18px;
+}
+
+.avatar{
+
+    width:46px;
+
+    height:46px;
+
+    border-radius:50%;
+
+    background:#2563eb;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-weight:700;
+}
+
+.profile-card h4{
+
+    margin:0;
+
+    font-size:.95rem;
+}
+
+.profile-card p{
+
+    margin:4px 0 0;
+
+    color:#94a3b8;
+
+    font-size:.8rem;
+
+    word-break:break-word;
+}
+
+.logout-btn{
+
+    width:100%;
+
+    border:none;
+
+    background:#ef4444;
+
+    color:#fff;
+
+    border-radius:12px;
+
+    padding:13px;
+
+    cursor:pointer;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:10px;
+
+    font-weight:600;
+
+    transition:.25s;
+}
+
+.logout-btn:hover{
+
+    background:#dc2626;
+}
+
+/* ================= Main ================= */
+
+.main{
+
+    flex:1;
+
+    display:flex;
+
+    flex-direction:column;
+}
+
+/* Topbar */
+
+.topbar{
+
+    height:74px;
+
+    background:#fff;
+
+    border-bottom:1px solid #e2e8f0;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:0 30px;
+
+    position:sticky;
+
+    top:0;
+
+    z-index:500;
+}
+
+.topbar-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+}
+
+.topbar-left h3{
+
+    margin:0;
+
+    color:#0f172a;
+}
+
+.topbar-left span{
+
+    color:#64748b;
+
+    font-size:.9rem;
+}
+
+.topbar-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+}
+
+.icon-btn{
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:12px;
+
+    border:none;
+
+    background:#f1f5f9;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+.icon-btn:hover{
+
+    background:#e2e8f0;
+}
+
+.top-avatar{
+
+    width:44px;
+
+    height:44px;
+
+    border-radius:50%;
+
+    background:#2563eb;
+
+    color:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-weight:700;
+}
+
+/* Content */
+
+.content{
+
+    padding:30px;
+
+    flex:1;
+
+    overflow:auto;
+}
+
+/* Mobile */
+
+.menu-btn{
+
+    display:none;
+
+    border:none;
+
+    background:none;
+
+    font-size:22px;
+
+    cursor:pointer;
+}
+
+.overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(15,23,42,.55);
+
+    z-index:900;
+}
+
+@media(max-width:992px){
+
+.sidebar{
+
+    position:fixed;
+
+    top:0;
+
+    left:-280px;
+
+    bottom:0;
+}
+
+.sidebar.open{
+
+    left:0;
+}
+
+.menu-btn{
+
+    display:block;
+}
+
+}
+
+@media(max-width:768px){
+
+.topbar{
+
+    padding:0 18px;
+}
+
+.content{
+
+    padding:18px;
+}
+
+.topbar-left span{
+
+    display:none;
+}
+
+.topbar-right{
+
+    gap:8px;
+}
+
+.brand h2{
+
+    font-size:1rem;
+}
+
+.brand span{
+
+    font-size:.75rem;
+}
+
+}

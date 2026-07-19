@@ -1,47 +1,176 @@
-<div class="page">
-  <h1>Browse Jobs</h1>
+<div class="jobs-page">
 
-  <form [formGroup]="filters" (ngSubmit)="applyFilters()" class="filter-bar">
-    <input type="text" formControlName="keyword" placeholder="Search by title or keyword" />
-    <input type="text" formControlName="location" placeholder="Location" />
-    <select formControlName="jobType">
-      <option value="">Any job type</option>
-      <option [value]="JobType.FULL_TIME">Full time</option>
-      <option [value]="JobType.PART_TIME">Part time</option>
-      <option [value]="JobType.CONTRACT">Contract</option>
-      <option [value]="JobType.INTERNSHIP">Internship</option>
-    </select>
-    <button type="submit">Search</button>
-  </form>
-
-  @if (isLoading()) {
-    <p>Loading jobs…</p>
-  } @else if (error()) {
-    <div class="form-error" role="alert">
-      <p>{{ error() }}</p>
-      <button type="button" (click)="loadJobs(currentPage())">Retry</button>
+    <div class="page-header">
+        <div>
+            <h1>Browse Jobs</h1>
+            <p>Discover opportunities that match your skills and career goals.</p>
+        </div>
     </div>
-  } @else if (result(); as r) {
-    @if (r.content.length === 0) {
-      <p class="hint">No jobs match your search. Try broadening your filters.</p>
-    } @else {
-      <div class="job-card-list">
-        @for (job of r.content; track job.id) {
-          <a class="job-card" [routerLink]="['/candidate/jobs', job.id]">
-            <div class="job-card__main">
-              <h3>{{ job.title }}</h3>
-              <p class="job-card__meta">{{ job.companyName }} · {{ job.location || 'Remote / Unspecified' }}</p>
-            </div>
-            <span class="badge badge-type">{{ job.jobType | enumLabel }}</span>
-          </a>
-        }
-      </div>
 
-      <div class="pagination">
-        <button type="button" (click)="prevPage()" [disabled]="r.pageNumber === 0">Previous</button>
-        <span>Page {{ r.pageNumber + 1 }} of {{ r.totalPages || 1 }}</span>
-        <button type="button" (click)="nextPage()" [disabled]="r.last">Next</button>
-      </div>
+    <form
+        class="search-card"
+        [formGroup]="filters"
+        (ngSubmit)="applyFilters()">
+
+        <div class="search-grid">
+
+            <div class="input-group">
+                <label>Keyword</label>
+                <input
+                    type="text"
+                    formControlName="keyword"
+                    placeholder="Job title, keyword..." />
+            </div>
+
+            <div class="input-group">
+                <label>Location</label>
+                <input
+                    type="text"
+                    formControlName="location"
+                    placeholder="City or Remote" />
+            </div>
+
+            <div class="input-group">
+                <label>Job Type</label>
+                <select formControlName="jobType">
+                    <option value="">All Types</option>
+                    <option [value]="JobType.FULL_TIME">Full Time</option>
+                    <option [value]="JobType.PART_TIME">Part Time</option>
+                    <option [value]="JobType.CONTRACT">Contract</option>
+                    <option [value]="JobType.INTERNSHIP">Internship</option>
+                </select>
+            </div>
+
+            <button class="search-btn" type="submit">
+                <i class="fas fa-search"></i>
+                Search Jobs
+            </button>
+
+        </div>
+
+    </form>
+
+    @if (isLoading()) {
+
+    <div class="loading-state">
+        <div class="loader"></div>
+        <p>Loading jobs...</p>
+    </div>
+
     }
-  }
+
+    @else if(error()){
+
+    <div class="error-card">
+
+        <h3>Unable to load jobs</h3>
+
+        <p>{{error()}}</p>
+
+        <button (click)="loadJobs(currentPage())">
+            Retry
+        </button>
+
+    </div>
+
+    }
+
+    @else if(result(); as r){
+
+        @if(r.content.length===0){
+
+        <div class="empty-state">
+
+            <i class="fas fa-briefcase"></i>
+
+            <h2>No Jobs Found</h2>
+
+            <p>Try changing your search filters.</p>
+
+        </div>
+
+        }
+
+        @else{
+
+        <div class="jobs-grid">
+
+            @for(job of r.content; track job.id){
+
+            <a
+                class="job-card"
+                [routerLink]="['/candidate/jobs',job.id]">
+
+                <div class="job-top">
+
+                    <div>
+
+                        <h2>{{job.title}}</h2>
+
+                        <p>{{job.companyName}}</p>
+
+                    </div>
+
+                    <span class="badge">
+                        {{job.jobType | enumLabel}}
+                    </span>
+
+                </div>
+
+                <div class="job-info">
+
+                    <span>
+                        <i class="fas fa-location-dot"></i>
+
+                        {{job.location || 'Remote'}}
+                    </span>
+
+                </div>
+
+                <div class="job-footer">
+
+                    <span>
+                        View Details
+                    </span>
+
+                    <i class="fas fa-arrow-right"></i>
+
+                </div>
+
+            </a>
+
+            }
+
+        </div>
+
+        <div class="pagination">
+
+            <button
+                (click)="prevPage()"
+                [disabled]="r.pageNumber===0">
+
+                Previous
+
+            </button>
+
+            <span>
+
+                Page {{r.pageNumber+1}} of {{r.totalPages || 1}}
+
+            </span>
+
+            <button
+                (click)="nextPage()"
+                [disabled]="r.last">
+
+                Next
+
+            </button>
+
+        </div>
+
+        }
+
+    }
+
 </div>

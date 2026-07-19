@@ -1,52 +1,244 @@
-<div class="page">
-  <p><a routerLink="/candidate/jobs">&larr; Back to jobs</a></p>
+<div class="job-details-page">
 
-  @if (isLoading()) {
-    <p>Loading job…</p>
-  } @else if (error()) {
-    <div class="form-error" role="alert">
-      <p>{{ error() }}</p>
-      <button type="button" (click)="loadJob()">Retry</button>
+    <a routerLink="/candidate/jobs" class="back-link">
+        <i class="fas fa-arrow-left"></i>
+        Back to Jobs
+    </a>
+
+    @if(isLoading()){
+
+    <div class="loading-state">
+        <div class="loader"></div>
+        <p>Loading Job...</p>
     </div>
-  } @else if (job(); as j) {
-    <div class="job-detail">
-      <div class="job-detail__header">
-        <div>
-          <h1>{{ j.title }}</h1>
-          <p class="job-card__meta">{{ j.companyName }} · {{ j.location || 'Remote / Unspecified' }}</p>
-        </div>
-        <span class="badge badge-type">{{ j.jobType | enumLabel }}</span>
-      </div>
 
-      @if (j.minSalary || j.maxSalary) {
-        <p class="hint">
-          Salary range: {{ j.minSalary ?? '—' }} – {{ j.maxSalary ?? '—' }}
-        </p>
-      }
+    }
 
-      @if (applyError()) {
-        <p class="form-error" role="alert">{{ applyError() }}</p>
-      }
-      @if (saveError()) {
-        <p class="form-error" role="alert">{{ saveError() }}</p>
-      }
+    @else if(error()){
 
-      <div class="job-detail__actions">
-        <button type="button" (click)="apply()" [disabled]="isApplying() || applied()">
-          {{ applied() ? 'Applied' : (isApplying() ? 'Submitting…' : 'Apply now') }}
-        </button>
-        <button type="button" class="secondary" (click)="toggleSave()" [disabled]="isSaving()">
-          {{ saved() ? 'Remove from saved' : 'Save job' }}
-        </button>
-      </div>
+    <div class="error-card">
 
-      <h3>Description</h3>
-      <p class="job-detail__text">{{ j.description }}</p>
+        <h3>Unable to load job</h3>
 
-      @if (j.requirements) {
-        <h3>Requirements</h3>
-        <p class="job-detail__text">{{ j.requirements }}</p>
-      }
+        <p>{{error()}}</p>
+
+        <button (click)="loadJob()">Retry</button>
+
     </div>
-  }
+
+    }
+
+    @else if(job(); as j){
+
+    <div class="job-layout">
+
+        <!-- LEFT -->
+
+        <section class="job-main">
+
+            <div class="job-card">
+
+                <div class="job-header">
+
+                    <div>
+
+                        <h1>{{j.title}}</h1>
+
+                        <p class="company">
+
+                            {{j.companyName}}
+
+                            •
+
+                            {{j.location || 'Remote'}}
+
+                        </p>
+
+                    </div>
+
+                    <span class="badge">
+                        {{j.jobType | enumLabel}}
+                    </span>
+
+                </div>
+
+                @if(j.minSalary || j.maxSalary){
+
+                <div class="salary-box">
+
+                    <i class="fas fa-wallet"></i>
+
+                    ₹ {{j.minSalary ?? '—'}} - ₹ {{j.maxSalary ?? '—'}}
+
+                </div>
+
+                }
+
+                <div class="action-buttons">
+
+                    <button class="primary-btn" (click)="apply()" [disabled]="isApplying() || applied()">
+
+                        {{ applied()
+                        ? 'Applied'
+                        : (isApplying()
+                        ? 'Applying...'
+                        : 'Apply Now') }}
+
+                    </button>
+
+                    <button class="secondary-btn" (click)="toggleSave()" [disabled]="isSaving()">
+
+                        {{saved() ? 'Saved' : 'Save Job'}}
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="content-card">
+
+                <h2>Job Description</h2>
+
+                <p>{{j.description}}</p>
+
+            </div>
+
+            @if(j.requirements){
+
+            <div class="content-card">
+
+                <h2>Requirements</h2>
+
+                <p>{{j.requirements}}</p>
+
+            </div>
+
+            }
+
+        </section>
+
+        <!-- RIGHT -->
+
+        <aside class="ai-panel">
+
+            <div class="ai-card">
+
+                <h2>
+
+                    🤖 AI Resume Match
+
+                </h2>
+
+                @if(isLoadingResumes()){
+
+                <p>Loading resumes...</p>
+
+                }
+
+                @else if(resumes().length===0){
+
+                <p>
+
+                    Upload a resume to check your match score.
+
+                </p>
+
+                <a routerLink="/candidate/resumes">
+
+                    Upload Resume
+
+                </a>
+
+                }
+
+                @else{
+
+                <div class="resume-picker">
+
+                    <label>Select Resume</label>
+
+                    <select formControlName="resumeId">
+
+                        @for(r of resumes(); track r.id){
+
+                        <option [value]="r.id">
+
+                            {{r.fileName}}
+
+                        </option>
+
+                        }
+
+                    </select>
+
+                </div>
+
+                <button class="secondary-btn full" (click)="checkMatchScore()">
+
+                    {{isCheckingMatch()
+                    ? 'Checking...'
+                    : 'Check Match Score'}}
+
+                </button>
+
+                <button class="secondary-btn full" (click)="checkMissingSkills()">
+
+                    {{isCheckingMissing()
+                    ? 'Checking...'
+                    : 'Find Missing Skills'}}
+
+                </button>
+
+                @if(matchResult(); as m){
+
+                <div class="score-card">
+
+                    <div class="circle" [style.--score]="m.matchScore">
+
+                        {{m.matchScore}}%
+
+                    </div>
+
+                    <p>
+
+                        {{m.reasoning}}
+
+                    </p>
+
+                </div>
+
+                }
+
+                @if(missingSkills(); as skills){
+
+                @if(skills.length){
+
+                <div class="skill-list">
+
+                    @for(skill of skills; track skill){
+
+                    <span>
+
+                        {{skill}}
+
+                    </span>
+
+                    }
+
+                </div>
+
+                }
+
+                }
+
+                }
+
+            </div>
+
+        </aside>
+
+    </div>
+
+    }
 </div>

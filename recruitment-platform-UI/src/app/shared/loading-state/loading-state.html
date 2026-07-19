@@ -1,0 +1,15 @@
+@if (variant() === 'skeleton') {
+  <div class="skeleton-list" aria-busy="true" [attr.aria-label]="label()">
+    @for (row of rowArray(rows()); track $index) {
+      <div class="skeleton-row">
+        <div class="skeleton-bar skeleton-bar--title"></div>
+        <div class="skeleton-bar skeleton-bar--meta"></div>
+      </div>
+    }
+  </div>
+} @else {
+  <div class="loading-spinner" aria-busy="true">
+    <span class="loading-spinner__circle" aria-hidden="true"></span>
+    <span>{{ label() }}</span>
+  </div>
+}

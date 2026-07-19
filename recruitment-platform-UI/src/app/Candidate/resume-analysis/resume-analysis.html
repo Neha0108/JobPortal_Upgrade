@@ -1,0 +1,213 @@
+<div class="analysis-page">
+
+    <a routerLink="/candidate/resumes" class="back-link">
+        <i class="fas fa-arrow-left"></i>
+        Back to Resumes
+    </a>
+
+    @if(isLoadingResume()){
+
+    <div class="loading-state">
+        <div class="loader"></div>
+        <p>Loading Resume...</p>
+    </div>
+
+    }
+
+    @else if(resumeError()){
+
+    <div class="error-card">
+        <i class="fas fa-circle-exclamation"></i>
+        <div>
+            <h3>Unable to load resume</h3>
+            <p>{{resumeError()}}</p>
+        </div>
+    </div>
+
+    }
+
+    @else if(resume(); as r){
+
+    <div class="page-header">
+
+        <div>
+
+            <h1>🤖 AI Resume Analysis</h1>
+
+            <p>
+
+                AI insights for
+
+                <strong>{{r.fileName}}</strong>
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="analysis-grid">
+
+        <!-- Skills -->
+
+        <div class="analysis-card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>Extracted Skills</h2>
+
+                    <p>Technologies detected from your resume</p>
+
+                </div>
+
+                <button
+                    class="primary-btn"
+                    (click)="extractSkills()"
+                    [disabled]="isExtractingSkills()">
+
+                    {{isExtractingSkills()
+                    ? 'Analyzing...'
+                    : (skills()
+                    ? 'Analyze Again'
+                    : 'Extract Skills')}}
+
+                </button>
+
+            </div>
+
+            @if(skillsError()){
+
+            <div class="error-box">
+
+                {{skillsError()}}
+
+            </div>
+
+            }
+
+            @if(skills(); as s){
+
+                @if(s.length){
+
+                <div class="skill-list">
+
+                    @for(skill of s; track skill){
+
+                    <span>{{skill}}</span>
+
+                    }
+
+                </div>
+
+                }
+
+                @else{
+
+                <div class="empty-box">
+
+                    No skills detected.
+
+                </div>
+
+                }
+
+            }
+
+            @else if(!isExtractingSkills()){
+
+            <div class="placeholder-box">
+
+                Click the button above to let AI identify all technical and soft skills in your resume.
+
+            </div>
+
+            }
+
+        </div>
+
+        <!-- Summary -->
+
+        <div class="analysis-card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>Professional Summary</h2>
+
+                    <p>Recruiter-friendly profile summary</p>
+
+                </div>
+
+                <button
+                    class="primary-btn"
+                    (click)="generateSummary()"
+                    [disabled]="isGeneratingSummary()">
+
+                    {{isGeneratingSummary()
+                    ? 'Generating...'
+                    : (summary()
+                    ? 'Generate Again'
+                    : 'Generate Summary')}}
+
+                </button>
+
+            </div>
+
+            @if(summaryError()){
+
+            <div class="error-box">
+
+                {{summaryError()}}
+
+            </div>
+
+            }
+
+            @if(summary(); as sm){
+
+            <div class="summary-box">
+
+                {{sm}}
+
+            </div>
+
+            }
+
+            @else if(!isGeneratingSummary()){
+
+            <div class="placeholder-box">
+
+                AI will generate a concise professional summary suitable for recruiters.
+
+            </div>
+
+            }
+
+        </div>
+
+    </div>
+
+    <div class="info-card">
+
+        <i class="fas fa-lightbulb"></i>
+
+        <div>
+
+            <h3>AI Match Recommendation</h3>
+
+            <p>
+
+                Open any job posting to compare this resume against the job description, view your match percentage, and identify missing skills.
+
+            </p>
+
+        </div>
+
+    </div>
+
+    }
+
+</div>

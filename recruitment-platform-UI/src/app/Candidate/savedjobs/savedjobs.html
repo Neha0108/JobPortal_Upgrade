@@ -1,36 +1,181 @@
-<div class="page">
-  <h1>Saved Jobs</h1>
+<div class="saved-jobs-page">
 
-  @if (isLoading()) {
-    <p>Loading your saved jobs…</p>
-  } @else if (error()) {
-    <div class="form-error" role="alert">
-      <p>{{ error() }}</p>
-      <button type="button" (click)="load(currentPage())">Retry</button>
+  <div class="page-header">
+
+    <div>
+
+      <h1>Saved Jobs</h1>
+
+      <p>
+
+        Keep track of opportunities you're interested in and apply whenever you're ready.
+
+      </p>
+
     </div>
-  } @else if (result(); as r) {
-    @if (r.content.length === 0) {
-      <p class="hint">You haven't saved any jobs yet.</p>
-    } @else {
-      <div class="job-card-list">
-        @for (job of r.content; track job.savedJobId) {
-          <div class="job-card">
-            <a class="job-card__main" [routerLink]="['/candidate/jobs', job.jobId]">
-              <h3>{{ job.jobTitle }}</h3>
-              <p class="job-card__meta">{{ job.companyName }} · {{ job.location || 'Remote / Unspecified' }}</p>
-            </a>
-            <button type="button" class="secondary" (click)="remove(job.jobId)" [disabled]="removingId() === job.jobId">
-              {{ removingId() === job.jobId ? 'Removing…' : 'Remove' }}
-            </button>
-          </div>
-        }
+
+  </div>
+
+  @if(isLoading()){
+
+  <div class="loading">
+
+    <div class="spinner"></div>
+
+    <p>Loading your saved jobs...</p>
+
+  </div>
+
+  }
+
+  @else if(error()){
+
+  <div class="alert alert-danger">
+
+    <h3>Unable to load saved jobs</h3>
+
+    <p>{{error()}}</p>
+
+    <button class="btn btn-danger mt-2" (click)="load(currentPage())">
+
+      Retry
+
+    </button>
+
+  </div>
+
+  }
+
+  @else if(result(); as r){
+
+  @if(r.content.length===0){
+
+  <div class="empty-state">
+
+    <i class="fas fa-bookmark"></i>
+
+    <h2>No Saved Jobs</h2>
+
+    <p>
+
+      Save interesting jobs to apply later.
+
+    </p>
+
+    <a routerLink="/candidate/jobs" class="btn btn-primary mt-3">
+
+      Browse Jobs
+
+    </a>
+
+  </div>
+
+  }
+
+  @else{
+
+  <div class="saved-job-grid">
+
+    @for(job of r.content; track job.savedJobId){
+
+    <div class="saved-job-card">
+
+      <div class="saved-job-top">
+
+        <div class="company-logo">
+
+          <i class="fas fa-building"></i>
+
+        </div>
+
+        <div class="saved-job-info">
+
+          <h2>
+
+            {{job.jobTitle}}
+
+          </h2>
+
+          <p>
+
+            {{job.companyName}}
+
+          </p>
+
+        </div>
+
       </div>
 
-      <div class="pagination">
-        <button type="button" (click)="prevPage()" [disabled]="r.pageNumber === 0">Previous</button>
-        <span>Page {{ r.pageNumber + 1 }} of {{ r.totalPages || 1 }}</span>
-        <button type="button" (click)="nextPage()" [disabled]="r.last">Next</button>
+      <div class="saved-job-meta">
+
+        <span>
+
+          <i class="fas fa-location-dot"></i>
+
+          {{job.location || 'Remote / Unspecified'}}
+
+        </span>
+
       </div>
+
+      <div class="saved-job-actions">
+
+        <a class="btn btn-primary" [routerLink]="['/candidate/jobs',job.jobId]">
+
+          <i class="fas fa-eye"></i>
+
+          View Job
+
+        </a>
+
+        <button class="btn btn-danger" (click)="remove(job.jobId)" [disabled]="removingId()===job.jobId">
+
+          <i class="fas fa-trash"></i>
+
+          {{removingId()===job.jobId
+
+          ? 'Removing...'
+
+          : 'Remove'}}
+
+        </button>
+
+      </div>
+
+    </div>
+
     }
+
+  </div>
+
+  <div class="pagination mt-4">
+
+    <button class="btn btn-secondary" (click)="prevPage()" [disabled]="r.pageNumber===0">
+
+      Previous
+
+    </button>
+
+    <span>
+
+      Page {{r.pageNumber+1}}
+
+      of
+
+      {{r.totalPages || 1}}
+
+    </span>
+
+    <button class="btn btn-secondary" (click)="nextPage()" [disabled]="r.last">
+
+      Next
+
+    </button>
+
+  </div>
+
   }
+
+  }
+
 </div>
